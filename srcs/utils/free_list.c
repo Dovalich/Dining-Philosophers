@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch_simulation.c                                :+:      :+:    :+:   */
+/*   free_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 11:56:01 by nammari          ###   ########.fr       */
+/*   Created: 2021/12/08 15:35:51 by nammari           #+#    #+#             */
+/*   Updated: 2021/12/08 15:35:56 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	launch_simulation(t_simulation_data *data)
+void	free_list(t_philo *head)
 {
-	printf("This is the date of the start %ld\n", data->starting_time);
-	return (SUCCESS);
+	t_philo	*tmp;
+	t_philo	*first_philo;
+
+	first_philo = head;
+	if (head == NULL)
+		return ;
+	while (head->right_philo != first_philo)
+	{
+		tmp = head;
+		head = head->right_philo;
+		free(tmp);
+		tmp = head;
+	}
+	free(head);
 }

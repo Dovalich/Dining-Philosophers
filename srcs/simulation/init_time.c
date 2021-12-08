@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch_simulation.c                                :+:      :+:    :+:   */
+/*   init_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 11:56:01 by nammari          ###   ########.fr       */
+/*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
+/*   Updated: 2021/12/08 11:54:46 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	launch_simulation(t_simulation_data *data)
+int	init_time(t_simulation_data *data)
 {
-	printf("This is the date of the start %ld\n", data->starting_time);
+	struct timeval	time_struct;
+
+	if (gettimeofday(&time_struct, NULL) == -1)
+	{
+		printf("There was an error with Gettimeofday\n");
+		return (ERROR);
+	}
+	data->starting_time = time_struct.tv_usec;
 	return (SUCCESS);
 }

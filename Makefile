@@ -6,7 +6,7 @@
 #    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2021/12/08 11:44:30 by nammari          ###   ########.fr        #
+#    Updated: 2021/12/08 15:37:12 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,15 +22,18 @@ YEL			= \033[0;33m
 GRN			= \033[0;32m
 RM			= rm -rf
 CC			= clang
-CFLAGS		= -Wall -Werror -Wextra -g3 -fsanitize=address #-v
+CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address #-v
 NAME		= philosophers
 SRCS_DIR	= srcs/
 
 
 ERROR_FILES = $(addprefix error_management/, error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c)
-SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c)
-SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)
+SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c ft_usleep.c\
+					 init_time.c init_philosopher_list.c)
+UTILS_FILES = $(addprefix utils/, ft_putstr_fd.c free_list.c)
+SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
+ 				$(UTILS_FILES)
 
 SRCS 		= $(addprefix ${SRCS_DIR}, ${SRC_FILES})
 OBJS_DIR	= objs/
@@ -43,7 +46,7 @@ OBJ_BONUS	= $(SRC_BONUS:.c=.o)
 INC			= -Iinclude
 includes	= $(wildcard include/*.h)
 
-OBJS_SUB_DIRS = $(addprefix objs/, error_management parsing simulation) 
+OBJS_SUB_DIRS = $(addprefix objs/, error_management parsing simulation utils) 
 
 # ************************************ #
 #                RULES                 #

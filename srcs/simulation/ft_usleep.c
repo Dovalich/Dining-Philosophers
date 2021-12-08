@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch_simulation.c                                :+:      :+:    :+:   */
+/*   ft_usleep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 11:56:01 by nammari          ###   ########.fr       */
+/*   Created: 2021/12/08 14:04:34 by nammari           #+#    #+#             */
+/*   Updated: 2021/12/08 14:04:43 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	launch_simulation(t_simulation_data *data)
-{
-	printf("This is the date of the start %ld\n", data->starting_time);
-	return (SUCCESS);
-}
+// void	ft_usleep(int sleep_time)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < sleep_time)
+// 	{
+// 		usleep(1);
+// 		++i;
+// 	}
+// }
+
+// while current_time != the time I want -> ft_usleep (~ 1 micro);

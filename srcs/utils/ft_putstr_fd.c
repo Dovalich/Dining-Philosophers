@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch_simulation.c                                :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 11:56:01 by nammari          ###   ########.fr       */
+/*   Created: 2021/12/08 14:28:43 by nammari           #+#    #+#             */
+/*   Updated: 2021/12/08 14:30:31 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	launch_simulation(t_simulation_data *data)
+unsigned	int ft_strlen(char *str)
 {
-	printf("This is the date of the start %ld\n", data->starting_time);
-	return (SUCCESS);
+	unsigned int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i])
+		++i;
+	return (i);
+}
+
+void	ft_putstr_fd(char *str, int fd)
+{
+	if (str == NULL)
+		return ;
+	write(fd, str, ft_strlen(str));
 }
