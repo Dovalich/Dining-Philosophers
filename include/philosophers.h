@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 15:38:00 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:25:51 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ enum error_flags {
 	THREAD_CREATION = 2,
 	EMPTY_LIST,
 	EMPTY_ELEM,
+	INVALID_NB_ARGS,
+	PROMPT_USER_INPUT,
 };
 
 // Structures ------------------------------------------------------------- //
@@ -66,7 +68,8 @@ int		error_message(int error_type);
 void	*malloc_error(char *error_msg);
 	
 	// Parsing
-	
+
+int	parse_input(int argc, char **argv, t_simulation_data *data);
 
 	// Simulation
 	
@@ -76,7 +79,7 @@ int		launch_simulation(t_simulation_data *data);
 t_philo	*create_philosopher_linked_list(t_simulation_data *data);
 
 	// Utils
-	
+
 void	ft_putstr_fd(char *str, int fd);
 void	free_list(t_philo *head);
 // ---------------------------------------------------------------------- //

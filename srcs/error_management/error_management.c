@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:38:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 15:26:38 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:31:21 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,20 @@
 int	error_message(int error_type)
 {
 	if (error_type == THREAD_CREATION)
-		ft_putstr_fd("Pthread_create failed\n", 2);
+		ft_putstr_fd("Error! Pthread_create failed\n", 2);
 	else if (error_type == EMPTY_LIST)
 		ft_putstr_fd("Error! Empty list\n", 2);
 	else if (error_type == EMPTY_LIST)
 		ft_putstr_fd("Error! Pushing NULL Elem to list\n", 2);
+	else if (error_type == INVALID_NB_ARGS)
+		ft_putstr_fd("Error! Invalid number of arguments\n", 2);
+	else if (error_type == PROMPT_USER_INPUT)
+	{
+		ft_putstr_fd("The program should take the following arguments:\n\n", 2);
+		ft_putstr_fd("number_of_philosophers ", 2);
+		ft_putstr_fd("time_to_die time_to_eat time_to_sleep ", 2);
+		ft_putstr_fd("[number_of_times_each_philosopher_must_eat]\n", 2);
+	}
 	return (ERROR);
 }
 

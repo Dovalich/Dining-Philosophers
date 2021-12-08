@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 16:08:41 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:20:37 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,11 @@ int	main(int argc, char **argv)
 {
 	t_simulation_data	data;
 	t_philo				*head;
-	(void)argv;
 	
 	if (argc > 5)
 		return (ERROR);
-	//if (parse_input(&data) != SUCCESS)
-	//	return (ERROR);
-	data.has_nb_time_to_eat = true;
-	data.nb_of_philo = 5;
-	data.nb_time_to_eat = 1;
-	data.starting_time = 10;
-	data.time_to_die = 20;
-	data.time_to_eat = 30;
-	data.time_to_sleep = 40;
+	if (parse_input(argc, argv, &data) != SUCCESS)
+		return (ERROR);
 	head = create_philosopher_linked_list(&data);
 	if (head == NULL)
 		return (ERROR);
