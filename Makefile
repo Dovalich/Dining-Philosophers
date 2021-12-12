@@ -6,7 +6,7 @@
 #    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2021/12/08 15:37:12 by nammari          ###   ########.fr        #
+#    Updated: 2021/12/12 15:33:05 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ ERROR_FILES = $(addprefix error_management/, error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c)
 SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c ft_usleep.c\
 					 init_time.c init_philosopher_list.c)
-UTILS_FILES = $(addprefix utils/, ft_putstr_fd.c free_list.c)
+UTILS_FILES = $(addprefix utils/, ft_putstr_fd.c free_list.c str_len.c\
+ 				num_checkers_parsing.c)
 SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
  				$(UTILS_FILES)
 

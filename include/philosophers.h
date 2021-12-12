@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 16:25:51 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/12 15:59:34 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,35 @@ typedef struct s_philo {
 
 	// Error_Management
 
-int		error_message(int error_type);
-void	*malloc_error(char *error_msg);
+int				error_message(int error_type);
+void			*malloc_error(char *error_msg);
 	
 	// Parsing
 
-int	parse_input(int argc, char **argv, t_simulation_data *data);
+int				parse_input(int argc, char **argv, t_simulation_data *data);
+int				get_nb_of_philosophers(char *argv, t_simulation_data *data);
+int				get_time_to_die(char *argv, t_simulation_data *data);
+int				get_time_to_eat(char *argv, t_simulation_data *data);
+int				get_time_to_sleep(char *argv, t_simulation_data *data);
+int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 	// Simulation
 	
-void	ft_usleep(int sleep_time);
-int		init_time(t_simulation_data *data);
-int		launch_simulation(t_simulation_data *data);
-t_philo	*create_philosopher_linked_list(t_simulation_data *data);
+void			ft_usleep(int sleep_time);
+int				init_time(t_simulation_data *data);
+int				launch_simulation(t_simulation_data *data);
+t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 
 	// Utils
 
-void	ft_putstr_fd(char *str, int fd);
-void	free_list(t_philo *head);
+void			ft_putstr_fd(char *str, int fd);
+void			free_list(t_philo *head);
+bool			is_num(char *str);
+unsigned long 	ft_strlen(char *str);
+bool			is_bigger_than_ulong_max(char *str);
+unsigned long	atoul(char *str);
+int				sizeof_ulong(unsigned long num);
+char			*ft_ultoa(unsigned long num);
 // ---------------------------------------------------------------------- //
 
 #endif
