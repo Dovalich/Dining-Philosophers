@@ -6,7 +6,7 @@
 #    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2021/12/16 14:38:50 by nammari          ###   ########.fr        #
+#    Updated: 2021/12/16 15:11:45 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,13 +47,17 @@ INC			= -Iinclude
 includes	= $(wildcard include/*.h)
 LIBRARY		= custom_library
 
-OBJS_SUB_DIRS = $(addprefix objs/, prog_exit parsing simulation utils) 
+OBJS_SUB_DIRS = $(addprefix objs/, prog_exit parsing simulation utils)
+
 
 # ************************************ #
 #                RULES                 #
 # ************************************ #
 
-all: $(NAME)
+
+all debug: $(NAME)
+
+debug: CFLAGS += -g
 
 $(OBJS_DIR):
 	mkdir $(OBJS_DIR)
@@ -78,3 +82,5 @@ fclean: clean
 	@printf "$(WHT)[$(YEL)$(NAME) BINARIES REMOVED$(WHT)]\n"
 
 re: fclean all
+
+.PHONY: all debug clean fclean re
