@@ -6,7 +6,7 @@
 #    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2021/12/12 15:33:05 by nammari          ###   ########.fr        #
+#    Updated: 2021/12/16 14:38:50 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,11 @@ NAME		= philosophers
 SRCS_DIR	= srcs/
 
 
-ERROR_FILES = $(addprefix error_management/, error_management.c)
+ERROR_FILES = $(addprefix prog_exit/, free_list.c error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c)
 SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c ft_usleep.c\
 					 init_time.c init_philosopher_list.c)
-UTILS_FILES = $(addprefix utils/, ft_putstr_fd.c free_list.c str_len.c\
- 				num_checkers_parsing.c)
+UTILS_FILES = $(addprefix utils/, tmp_test_functions.c)
 SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
  				$(UTILS_FILES)
 
@@ -46,8 +45,9 @@ SRC_BONUS	= philosophers_bonus.c
 OBJ_BONUS	= $(SRC_BONUS:.c=.o)
 INC			= -Iinclude
 includes	= $(wildcard include/*.h)
+LIBRARY		= custom_library
 
-OBJS_SUB_DIRS = $(addprefix objs/, error_management parsing simulation utils) 
+OBJS_SUB_DIRS = $(addprefix objs/, prog_exit parsing simulation utils) 
 
 # ************************************ #
 #                RULES                 #
@@ -60,7 +60,8 @@ $(OBJS_DIR):
 	mkdir $(OBJS_SUB_DIRS)
 
 $(NAME): $(OBJS_DIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	make -C $(LIBRARY)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) custom_library/my_library.a
 	@printf "$(WHT)[$(GRN)$(NAME) COMPILED$(WHT)]\n"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(include)

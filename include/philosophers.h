@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/12 15:59:34 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/16 14:36:06 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <limits.h>
+# include "../custom_library/includes/utils_lib.h"
 
 // Error Enum & Defines ---------------------------------------------------- // 
 
@@ -66,6 +67,8 @@ typedef struct s_philo {
 
 int				error_message(int error_type);
 void			*malloc_error(char *error_msg);
+void			free_list(t_philo *head);
+
 	
 	// Parsing
 
@@ -85,14 +88,10 @@ t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 
 	// Utils
 
-void			ft_putstr_fd(char *str, int fd);
-void			free_list(t_philo *head);
-bool			is_num(char *str);
-unsigned long 	ft_strlen(char *str);
-bool			is_bigger_than_ulong_max(char *str);
-unsigned long	atoul(char *str);
-int				sizeof_ulong(unsigned long num);
-char			*ft_ultoa(unsigned long num);
+
+	// Testing -> To be deleted before pushing
+
+void			print_list(t_philo *head, t_simulation_data *data);
 // ---------------------------------------------------------------------- //
 
 #endif
