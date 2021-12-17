@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/14 12:53:26 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 12:18:20 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,15 @@ void	*routine(void *mutex)
 	return (NULL);
 }
 
-int	parse_input(int argc, char **argv, t_simulation_data *data)
-{
-	if (!(argc == 5 || argc == 6) || argv == NULL || *argv == NULL)
-		return (error_message(PROMPT_USER_INPUT));
-	if (get_nb_of_philosophers(argv[1], data) == ERROR)
-		return (error_message(PROMPT_USER_INPUT));
-	if (get_time_to_die(argv[2], data) == ERROR)
-		return (error_message(PROMPT_USER_INPUT));
-	if (get_time_to_eat(argv[3], data) == ERROR)
-		return (error_message(PROMPT_USER_INPUT));
-	if (get_time_to_sleep(argv[4], data) == ERROR)
-		return (error_message(PROMPT_USER_INPUT));
-	if (argv[5])
-		if (get_nb_times_to_eat(argv[5], data) == ERROR)
-			return (error_message(PROMPT_USER_INPUT));
-	return (SUCCESS);
+int	get_time(t_simulation_data *data)
+{	
+	unsigned long	cur_time;
+	
+	gettimeofday(&data->tv, NULL);
+	cur_time = data->tv.tv_usec / 1000;
+	printf("Time to run your function is %lu ms\n", 
+			cur_time - data->starting_time);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -60,7 +53,7 @@ int	main(int argc, char **argv)
 	print_list(head, &data);
 	if (init_time(&data))
 		return (ERROR);
-	// if (launch_simulation(&data))
-	// 	return (ERROR);
+	if (launch_simulation(&data, head))
+		return (ERROR);
 	return (SUCCESS);
 }

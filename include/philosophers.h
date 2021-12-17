@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/16 14:36:06 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 12:15:29 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define SUCCESS 0
 # define ERROR 1
+# define MS 1000 // To divide by Microseconds and get Miliseconds
 
 enum error_flags {
 	THREAD_CREATION = 2,
@@ -46,17 +47,21 @@ typedef struct s_simulation_data {
 	unsigned long	starting_time;
 	unsigned long	nb_time_to_eat;
 	bool			has_nb_time_to_eat;
+	struct timeval	tv;
 }				t_simulation_data;
 
 typedef struct s_philo {
-	unsigned long	philo_nb;
-	unsigned long	time_to_die;
-	unsigned long	time_to_eat;
-	unsigned long	time_to_sleep;
-	unsigned long	nb_time_to_eat;
-	bool			has_nb_time_to_eat;
-	struct s_philo	*left_philo;
-	struct s_philo	*right_philo;
+	unsigned long		philo_nb;
+	unsigned long		time_to_die;
+	unsigned long		time_to_eat;
+	unsigned long		time_to_sleep;
+	unsigned long		nb_time_to_eat;
+	bool				has_nb_time_to_eat;
+	bool				fork_on_table;
+	pthread_t			thread;
+	t_simulation_data	*data;
+	struct s_philo		*left_philo;
+	struct s_philo		*right_philo;
 }				t_philo;
 
 // ------------------------------------------------------------------------ //
@@ -80,10 +85,11 @@ int				get_time_to_sleep(char *argv, t_simulation_data *data);
 int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 	// Simulation
-	
+
+int				get_time(t_simulation_data *data);
 void			ft_usleep(int sleep_time);
 int				init_time(t_simulation_data *data);
-int				launch_simulation(t_simulation_data *data);
+int				launch_simulation(t_simulation_data *data, t_philo *head);
 t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 
 	// Utils

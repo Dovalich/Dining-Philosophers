@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:33:55 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 16:14:23 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 11:52:16 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ t_philo	*create_philosopher_linked_list(t_simulation_data *data)
 		if (elem_push_back(&head, create_new_elem(data, i + 1)) != SUCCESS)
 		{
 			free_list(head);
-			return (NULL);		
+			printf("Error: Malloc faillure on""\
+					 create_philosopher_linked_list\n");
+			return (NULL);
 		}
 		++i;
 	}

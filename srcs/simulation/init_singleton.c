@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_time.c                                        :+:      :+:    :+:   */
+/*   init_singleton.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 12:18:06 by nammari          ###   ########.fr       */
+/*   Created: 2021/12/17 11:34:20 by nammari           #+#    #+#             */
+/*   Updated: 2021/12/17 11:37:55 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	init_time(t_simulation_data *data)
+t_simulation_data	*get_data(void)
 {
-	if (gettimeofday(&data->tv, NULL) == -1)
+	static t_simulation_data	*data = NULL;
+
+	if (data == NULL)
 	{
-		printf("There was an error with Gettimeofday\n");
-		return (ERROR);
-	}
-	data->starting_time = (&data->tv)->tv_usec / 1000;
-	return (SUCCESS);
+		data = malloc(sizeof(t_simulation_data));
+		if (data == NULL)
+			return (NULL);
+	return (data);
 }
