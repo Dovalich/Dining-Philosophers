@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 12:15:29 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 16:42:29 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ typedef struct s_simulation_data {
 	unsigned long	nb_of_philo;
 	unsigned long	starting_time;
 	unsigned long	nb_time_to_eat;
+	unsigned long	curr_time;
 	bool			has_nb_time_to_eat;
+	pthread_t		thread;
+	pthread_mutex_t	mutex;
 	struct timeval	tv;
+	struct s_philo	*philo_lst;
 }				t_simulation_data;
 
 typedef struct s_philo {
@@ -58,6 +62,7 @@ typedef struct s_philo {
 	unsigned long		nb_time_to_eat;
 	bool				has_nb_time_to_eat;
 	bool				fork_on_table;
+	pthread_mutex_t		mutex;
 	pthread_t			thread;
 	t_simulation_data	*data;
 	struct s_philo		*left_philo;
@@ -86,10 +91,11 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 	// Simulation
 
-int				get_time(t_simulation_data *data);
+unsigned long	get_time(t_simulation_data *data, bool verbose);
 void			ft_usleep(int sleep_time);
 int				init_time(t_simulation_data *data);
-int				launch_simulation(t_simulation_data *data, t_philo *head);
+void			update_time(t_simulation_data *data);
+int				start_simulation(t_simulation_data *data, t_philo *head);
 t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 
 	// Utils

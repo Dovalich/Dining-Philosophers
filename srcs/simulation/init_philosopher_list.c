@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:33:55 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 11:52:16 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 16:10:20 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ t_philo	*create_new_elem(t_simulation_data *data, unsigned long philo_nb)
 	new = (t_philo*)malloc(sizeof(t_philo));
 	if (new == NULL)
 		return (malloc_error("Create_new_elem malloc failed\n"));
+	new->data = data;
 	new->left_philo = NULL;
+	new->fork_on_table = true;
 	new->right_philo = NULL;
 	new->philo_nb = philo_nb;
 	new->time_to_die = data->time_to_die;
@@ -29,6 +31,12 @@ t_philo	*create_new_elem(t_simulation_data *data, unsigned long philo_nb)
 		new->nb_time_to_eat = data->nb_time_to_eat;
 	else
 		new->nb_time_to_eat = ULONG_MAX;
+		
+	if (pthread_mutex_init(&new->mutex, NULL) != 0)
+	{
+		printf("Mutex_init_failed at Philosopher nb %lu\n", new->philo_nb);
+		return (NULL);
+	}
 	return (new);
 }
 

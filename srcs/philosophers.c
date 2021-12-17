@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 12:18:20 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 16:42:12 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ void	*routine(void *mutex)
 	return (NULL);
 }
 
-int	get_time(t_simulation_data *data)
-{	
-	unsigned long	cur_time;
-	
-	gettimeofday(&data->tv, NULL);
-	cur_time = data->tv.tv_usec / 1000;
-	printf("Time to run your function is %lu ms\n", 
-			cur_time - data->starting_time);
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_simulation_data	data;
@@ -50,10 +39,12 @@ int	main(int argc, char **argv)
 	head = create_philosopher_linked_list(&data);
 	if (head == NULL)
 		return (ERROR);
-	print_list(head, &data);
+	data.philo_lst = head;
+	if (pthread_mutex_init(&data.mutex, NULL) != 0)
+		printf("Error init data->mutex\n");
 	if (init_time(&data))
 		return (ERROR);
-	if (launch_simulation(&data, head))
+	if (start_simulation(&data, head))
 		return (ERROR);
 	return (SUCCESS);
 }

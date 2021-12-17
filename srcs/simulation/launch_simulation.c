@@ -6,50 +6,88 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 12:41:21 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/17 16:59:28 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*print_hi(void *philo)
+void	get_forks(t_philo *philo)
+{
+	if (philo->left_philo->fork_on_table)
+	{
+		pthread_mutex_lock(&philo->left_philo->mutex);
+		printf("[]%lu ms Philosopher nb %lu has taken left fork\n",philo->data->curr_time, philo->philo_nb);
+		philo->left_philo->fork_on_table = false;
+	}
+	if (philo->right_philo->fork_on_table)
+	{
+		pthread_mutex_lock(&philo->right_philo->mutex);
+		printf("[]%lu ms Philosopher nb %lu has taken right fork\n",philo->data->curr_time, philo->philo_nb);
+		philo->right_philo->fork_on_table = false;
+	}
+}
+
+void	philo_eat(t_philo *philo, t_simulation_data *data)
+{
+	unsigned long	time_to_eat;
+
+	
+	time_to_eat = data->curr_time;
+	while (data->curr_time < time_to_eat + data->time_to_eat)
+	{
+		ft_usleep(1);
+	}
+	
+}
+
+void	*philo_thread(void *philo)
 {
 	t_philo *ptr;
 	
 	ptr = (t_philo *)philo;
-	ptr->fork_on_table = true;
 	if (ptr->data->nb_of_philo % 2 == 0 && ptr->philo_nb % 2 != 0)
 		usleep(5);
-	if (ptr->left_philo->fork_on_table)
-		printf("Philosopher nb %lu has taken left fork\n", ptr->philo_nb);
-	if (ptr->right_philo->fork_on_table)
-		printf("Philosopher nb %lu has taken right fork\n", ptr->philo_nb);
+	get_forks(ptr);
 	return (NULL);
 }
 
-// int	launch_philo_even(t_simulation_data *data, t_philo *head)
-// {
-// 	int	i;
-
-// 	i = 0;
-	
-// }
-
-int	launch_simulation(t_simulation_data *data, t_philo *head)
+bool	all_philos_alive(t_philo *head)
 {
-	int	i;
-	// pthread_t	main_thread;
+	t_philo	*head_ptr;
+
+	head_ptr = head;
+	while (head->right_philo != head_ptr)
+	{
+		if (head->time_to_die == 0)
+			return (false);
+		head = head->right_philo;
+	}
+	return (true);
+}
+
+void	*data_thread(void *data)
+{
+	t_simulation_data	*d;
+
+	d = data;
+	while (all_philos_alive(d->philo_lst))
+	{
+		update_time(d);
+	}
+	return (NULL);
+}
+
+
+int	start_simulation(t_simulation_data *data, t_philo *head)
+{
+	int			i;
 
 	i = 0;
-	// if (data-> nb_of_philo % 2 == 0)
-	// 	//launch_philosopher_even(head, data);
-	// else
-	// 	//launch_philosopher_odd(head, data);
-	// launch_data_thread(head, data);
+	pthread_create(&data->thread, NULL, &data_thread, data);
 	while ((unsigned long)i < data->nb_of_philo)
 	{
-		head->fork_on_table = true;
-		if (pthread_create(&head->thread, NULL, &print_hi, (void *)head) != 0)
+		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
 		{
 			if (head == NULL)
 				printf("Pthread_create faillure at Philosopher #%p\n", head);
@@ -60,12 +98,12 @@ int	launch_simulation(t_simulation_data *data, t_philo *head)
 		if (head->right_philo != NULL)
 			head = head->right_philo;
 	}
-	i = 0;
-	while ((unsigned long)i < data->nb_of_philo)
+	pthread_join(data->thread, NULL);
+	while ((unsigned long)i > 0)
 	{
 		pthread_join(head->thread, NULL);
 		head = head->left_philo;
-		++i;
+		--i;
 	}
 	return (SUCCESS);
 }
