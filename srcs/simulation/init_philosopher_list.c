@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:33:55 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 16:10:20 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/23 11:11:47 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ t_philo	*create_new_elem(t_simulation_data *data, unsigned long philo_nb)
 		new->nb_time_to_eat = data->nb_time_to_eat;
 	else
 		new->nb_time_to_eat = ULONG_MAX;
-		
+	new->is_eating = false;
+	new->is_sleeping = false;
+	new->is_sleeping = false;
 	if (pthread_mutex_init(&new->mutex, NULL) != 0)
-	{
-		printf("Mutex_init_failed at Philosopher nb %lu\n", new->philo_nb);
-		return (NULL);
-	}
+		return (mutex_creation_error());
 	return (new);
 }
 

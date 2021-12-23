@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 16:42:29 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/23 11:11:34 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ typedef struct s_philo {
 	unsigned long		time_to_eat;
 	unsigned long		time_to_sleep;
 	unsigned long		nb_time_to_eat;
+	bool				is_eating;
+	bool				is_thinking;
+	bool				is_sleeping;
 	bool				has_nb_time_to_eat;
 	bool				fork_on_table;
 	pthread_mutex_t		mutex;
@@ -78,6 +81,7 @@ typedef struct s_philo {
 int				error_message(int error_type);
 void			*malloc_error(char *error_msg);
 void			free_list(t_philo *head);
+void			*mutex_creation_error(void);
 
 	
 	// Parsing
@@ -91,7 +95,7 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 	// Simulation
 
-unsigned long	get_time(t_simulation_data *data, bool verbose);
+unsigned long	get_time(t_simulation_data *data);
 void			ft_usleep(int sleep_time);
 int				init_time(t_simulation_data *data);
 void			update_time(t_simulation_data *data);

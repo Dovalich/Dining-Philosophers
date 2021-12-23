@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/21 09:53:16 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/23 14:11:40 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,34 @@
 
 void	philo_eat(t_philo *philo, t_simulation_data *data)
 {
-	unsigned long	time_to_eat;
-
-	pthread_mutex_lock(&data->mutex);
-	time_to_eat = data->curr_time;
-	printf("THis is time to eat %lu and curr %lu\n", philo->data->time_to_eat, data->curr_time);
-	while (data->curr_time < time_to_eat + philo->time_to_eat)
-	{
-		usleep(5000);
-		data->curr_time += 5;
-	}
+	pthread_mutex_lock(&philo->data->mutex);
+	printf("%03lu ms Philosopher [%lu] is eating\n", philo->data->curr_time, philo->philo_nb);
 	pthread_mutex_unlock(&data->mutex);
+	while (get_time(philo->data) - philo->data->curr_time < philo->data->time_to_eat)
+	{
+		usleep(50);
+	}
+	update_time(philo->data);
 	return ;
-	// while (data->curr_time < time_to_eat + data->time_to_eat)
-	// {
-	// 	usleep(100);
-	// }
 }
 
 void	get_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->mutex);
-	printf("%03lu ms Philosopher [%lu] has taken left fork\n",philo->data->curr_time, philo->philo_nb);
-	philo->fork_on_table = false;
-
 	pthread_mutex_lock(&philo->right_philo->mutex);
-	printf("%03lu ms Philosopher [%lu] has taken right fork\n",philo->data->curr_time, philo->philo_nb);
+	philo->fork_on_table = false;
 	philo->right_philo->fork_on_table = false;
-
+	printf("%03lu ms Philosopher [%lu] has taken left fork\n",philo->data->curr_time, philo->philo_nb);
+	printf("%03lu ms Philosopher [%lu] has taken right fork\n",philo->data->curr_time, philo->philo_nb);
+	
 	philo_eat(philo, philo->data);
 	
 	philo->right_philo->fork_on_table = true;
-	printf("%03lu ms Philosopher [%lu] has put right fork down\n",philo->data->curr_time, philo->philo_nb);
-	pthread_mutex_unlock(&philo->right_philo->mutex);
-	
 	philo->fork_on_table = true;
+	printf("%03lu ms Philosopher [%lu] has put right fork down\n",philo->data->curr_time, philo->philo_nb);
 	printf("%03lu ms Philosopher [%lu] has put left fork down \n",philo->data->curr_time, philo->philo_nb);
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(&philo->right_philo->mutex);
+	pthread_mutex_unlock(&philo->mutex);	
 }
 
 
@@ -61,7 +52,9 @@ void	*philo_thread(void *philo)
 	ptr = (t_philo *)philo;
 	if (ptr->philo_nb % 2 != 0)
 		usleep(50000);
+	// Start of the critical section
 	get_forks(ptr);
+	// end of the critical section
 	return (NULL);
 }
 

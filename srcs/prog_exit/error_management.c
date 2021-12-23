@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:38:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/08 16:31:21 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/23 11:11:19 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,11 @@ void	*malloc_error(char *error_msg)
 	{
 		ft_putstr_fd(error_msg, 2);
 	}
+	return (NULL);
+}
+
+void	*mutex_creation_error(void)
+{
+	printf("Mutex_init_failed at Philosopher\n");
 	return (NULL);
 }
