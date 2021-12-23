@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 14:04:34 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/20 12:35:36 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/23 14:57:10 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_usleep(int sleep_time)
 	i = 0;
 	while (i < sleep_time)
 	{
-		usleep(1);
+		usleep(10);
 		++i;
 	}
 }
