@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/23 11:02:28 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/24 08:52:40 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ int	init_time(t_simulation_data *data)
 unsigned long	get_time(t_simulation_data *data)
 {
 	gettimeofday(&data->tv, NULL);
-	return ((data->tv.tv_sec * 1000 + data->tv.tv_usec / 1000) - data->starting_time);
+	return ((data->tv.tv_sec * 1000 + data->tv.tv_usec / 1000)
+			- data->starting_time);
 }
 
 void	update_time(t_simulation_data *data)
 {
 	gettimeofday(&data->tv, NULL);
-	data->curr_time = ((data->tv.tv_sec * 1000 + data->tv.tv_usec / 1000) - data->starting_time); 
+	data->curr_time = ((data->tv.tv_sec * 1000 + data->tv.tv_usec / 1000)
+					- data->starting_time); 
 }

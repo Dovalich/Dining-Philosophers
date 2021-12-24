@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/23 15:15:33 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/24 10:12:34 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,14 @@ typedef struct s_simulation_data {
 
 typedef struct s_philo {
 	unsigned long		philo_nb;
-	unsigned long		time_to_die;
-	unsigned long		time_to_eat;
-	unsigned long		time_to_sleep;
+	unsigned long		last_ate_at;
 	unsigned long		nb_time_to_eat;
 	bool				is_eating;
 	bool				is_thinking;
 	bool				is_sleeping;
 	bool				is_alive;
-	bool				has_nb_time_to_eat;
 	bool				fork_on_table;
+	pthread_mutex_t		ts_print_mutex;
 	pthread_mutex_t		mutex;
 	pthread_t			thread;
 	t_simulation_data	*data;
@@ -103,10 +101,9 @@ void			update_time(t_simulation_data *data);
 int				start_simulation(t_simulation_data *data, t_philo *head);
 t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 void			print_state(t_philo *philo);
-void			start_sleeping(t_philo *philo);
-void			get_forks(t_philo *philo);
-void			drop_forks(t_philo *philo);
+void			start_sleeping(t_philo *philo, t_simulation_data *data);
 void			start_eating(t_philo *philo, t_simulation_data *data);
+void			start_thinking(t_philo *philo, t_simulation_data *data);
 
 	// Utils
 

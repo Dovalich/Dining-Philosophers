@@ -6,28 +6,11 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/17 16:42:12 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/24 08:51:58 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-int	global = 0;
-
-void	*routine(void *mutex)
-{
-	int	i;
-
-	i = 0;
-	while (i < 1000000)
-	{
-		++i;
-		pthread_mutex_lock(mutex);
-		global++;
-		pthread_mutex_unlock(mutex);
-	}
-	return (NULL);
-}
 
 int	main(int argc, char **argv)
 {
