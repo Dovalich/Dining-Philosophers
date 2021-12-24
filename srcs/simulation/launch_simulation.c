@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/24 10:40:50 by nammari          ###   ########.fr       */
+/*   Updated: 2021/12/24 14:23:59 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*philo_thread(void *philosopher)
 	philo = (t_philo *)philosopher;
 	if (philo->philo_nb % 2 != 0)
 		usleep(100);
-	while (true)
+	while (!philo->data->is_dead)
 	{
 	// Start of the critical section
 		start_eating(philo, philo->data);
@@ -27,7 +27,10 @@ void	*philo_thread(void *philosopher)
 		start_thinking(philo, philo->data);
 	// end of the critical section
 	}
-	return (NULL);
+	pthread_mutex_lock(&philo->data->ts_print);
+	philo->data->is_dead = true;
+	pthread_mutex_unlock(&philo->data->ts_print);
+	return (philosopher);
 }
 
 bool	all_philos_alive(t_philo *head)
@@ -37,8 +40,13 @@ bool	all_philos_alive(t_philo *head)
 	head_ptr = head;
 	while (head->right_philo != head_ptr)
 	{
-		if (head->is_alive == false)
+		if (head->is_alive == false || head->data->is_dead)
+		{
+			printf("%03lu ms Philosopher [%lu] died\n",\
+				head->data->curr_time, head->philo_nb);
+			head->data->is_dead = true;
 			return (false);
+		}
 		head = head->right_philo;
 	}
 	return (true);
@@ -55,12 +63,20 @@ void	*data_thread(void *data)
 	i = 0;
 	while (all_philos_alive(d->philo_lst))
 	{
-		usleep(5);
-		continue;
+		usleep(1000);
+	}
+	i = 0;
+	d->is_dead = true;
+	philo->is_alive = false;
+	philo = philo->right_philo;
+	while (philo != d->philo_lst)
+	{
+		philo->is_alive = false;
+		philo = philo->right_philo;
 	}
 	while (i < d->nb_of_philo)
 	{
-		pthread_detach(philo->thread);
+		pthread_join(philo->thread, NULL);
 		philo = philo->right_philo;
 		++i;
 	}
@@ -73,7 +89,7 @@ int	start_simulation(t_simulation_data *data, t_philo *head)
 	int			i;
 
 	i = 0;
-	pthread_create(&data->thread, NULL, &data_thread, data);
+	data->is_dead = false;
 	while ((unsigned long)i < data->nb_of_philo)
 	{
 		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
@@ -87,6 +103,7 @@ int	start_simulation(t_simulation_data *data, t_philo *head)
 		if (head->right_philo != NULL)
 			head = head->right_philo;
 	}
+	pthread_create(&data->thread, NULL, &data_thread, data);
 	pthread_join(data->thread, NULL);
 	// while ((unsigned long)i > 0)
 	// {
