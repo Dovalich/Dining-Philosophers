@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/24 13:50:36 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/03 14:43:46 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int	main(int argc, char **argv)
 	data.philo_lst = head;
 	if (pthread_mutex_init(&data.ts_print, NULL) != 0)
 		printf("Error init data->mutex\n");
-	if (init_time(&data))
-		return (ERROR);
+	get_time();
 	if (start_simulation(&data, head))
 		return (ERROR);
 	return (SUCCESS);

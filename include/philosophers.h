@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/24 13:50:41 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/03 15:06:06 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define SUCCESS 0
 # define ERROR 1
 
+typedef unsigned long long u_timestamp;
+
 enum error_flags {
 	THREAD_CREATION = 2,
 	EMPTY_LIST,
@@ -39,24 +41,23 @@ enum error_flags {
 // Structures ------------------------------------------------------------- //
 
 typedef struct s_simulation_data {
-	unsigned long	time_to_die;
-	unsigned long	time_to_eat;
-	unsigned long	time_to_sleep;
+	u_timestamp		time_to_die;
+	u_timestamp		time_to_eat;
+	u_timestamp		time_to_sleep;
 	unsigned long	nb_of_philo;
-	unsigned long	starting_time;
+	u_timestamp		starting_time;
 	unsigned long	nb_time_to_eat;
-	unsigned long	curr_time;
+	u_timestamp		curr_time;
 	bool			has_nb_time_to_eat;
 	bool			is_dead;
 	pthread_mutex_t	ts_print;
 	pthread_t		thread;
-	struct timeval	tv;
 	struct s_philo	*philo_lst;
 }				t_simulation_data;
 
 typedef struct s_philo {
 	unsigned long		philo_nb;
-	unsigned long		last_ate_at;
+	u_timestamp			last_ate_at;
 	unsigned long		nb_time_to_eat;
 	bool				is_eating;
 	bool				is_thinking;
@@ -93,8 +94,8 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 	// Simulation
 
-unsigned long	get_time(t_simulation_data *data);
-void			ft_usleep(int sleep_time);
+u_timestamp		get_time(void);
+void			ft_usleep(u_timestamp sleep_time);
 int				init_time(t_simulation_data *data);
 void			update_time(t_simulation_data *data);
 int				start_simulation(t_simulation_data *data, t_philo *head);
@@ -103,7 +104,7 @@ void			print_state(t_philo *philo);
 void			start_sleeping(t_philo *philo, t_simulation_data *data);
 void			start_eating(t_philo *philo, t_simulation_data *data);
 void			start_thinking(t_philo *philo, t_simulation_data *data);
-
+bool			is_dead(t_philo *philo, t_simulation_data *data);
 void			print_took_forks(t_philo *philo);
 
 	// Utils
