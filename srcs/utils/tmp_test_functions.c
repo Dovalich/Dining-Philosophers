@@ -21,14 +21,14 @@ void	print_list(t_philo *head, t_simulation_data *data)
 		printf("List is Empty.\n");
 	else if (data->nb_of_philo == 1)
 	{
-		printf("This is Philo nb #%0lu. To my Left Philo_nb #%p and to My Right Philo_nb #%p\n", head->philo_nb, head->left_philo, head->right_philo);
+		printf("This is Philo nb #%0lu. To my Left Philo_nb #%p and to My Right Philo_nb #%p\n", head->id, head->left_philo, head->right_philo);
 	}
 	else
 	{
 		while (i < data->nb_of_philo) 
 		{
 			++i;
-			printf("This is Philo nb #%0lu. To my Left Philo_nb #%0lu and to My Right Philo_nb #%0lu\n", head->philo_nb, head->left_philo->philo_nb, head->right_philo->philo_nb);
+			printf("This is Philo nb #%0lu. To my Left Philo_nb #%0lu and to My Right Philo_nb #%0lu\n", head->id, head->left_philo->id, head->right_philo->id);
 			head = head->right_philo;
 		}
 	}

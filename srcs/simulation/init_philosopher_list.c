@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-t_philo	*create_new_elem(t_simulation_data *data, unsigned long philo_nb)
+t_philo	*create_new_elem(t_simulation_data *data, unsigned long id)
 {
 	t_philo	*new;
 
@@ -21,13 +21,9 @@ t_philo	*create_new_elem(t_simulation_data *data, unsigned long philo_nb)
 		return (malloc_error("Create_new_elem malloc failed\n"));
 	new->data = data;
 	new->left_philo = NULL;
-	new->fork_on_table = true;
 	new->right_philo = NULL;
-	new->philo_nb = philo_nb;
+	new->id = id;
 	new->last_ate_at = 0;
-	new->is_eating = false;
-	new->is_sleeping = false;
-	new->is_thinking = false;
 	new->is_alive = true;
 	if (data->has_nb_time_to_eat)
 		new->nb_time_to_eat = data->nb_time_to_eat;
@@ -52,7 +48,9 @@ int	elem_push_back(t_philo **head, t_philo *elem)
 	{
 		current = *head;
 		while (current->right_philo != NULL && current->right_philo != *head)
+		{
 			current = current->right_philo;
+		}
 		current->right_philo = elem;
 		elem->right_philo = *head;
 		elem->left_philo = current;

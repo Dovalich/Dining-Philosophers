@@ -27,7 +27,7 @@
 
 # define SUCCESS 0
 # define ERROR 1
-
+# define BUFFER_SIZE 128
 typedef unsigned long long u_timestamp;
 
 enum error_flags {
@@ -38,32 +38,38 @@ enum error_flags {
 	PROMPT_USER_INPUT,
 };
 
+typedef enum philo_states {
+	SLEEPING = 0,
+	THINKING,
+	EATING,
+	DIED,
+	TOOK_LEFT_FORK,
+	TOOK_RIGHT_FORK,
+	TOOK_FORKS
+} 			philo_states;
+
 // Structures ------------------------------------------------------------- //
 
 typedef struct s_simulation_data {
 	u_timestamp		time_to_die;
 	u_timestamp		time_to_eat;
 	u_timestamp		time_to_sleep;
-	unsigned long	nb_of_philo;
 	u_timestamp		starting_time;
-	unsigned long	nb_time_to_eat;
 	u_timestamp		curr_time;
-	bool			has_nb_time_to_eat;
-	bool			is_dead;
 	pthread_mutex_t	ts_print;
 	pthread_t		thread;
+	unsigned long	nb_of_philo;
+	unsigned long	nb_time_to_eat;
+	bool			has_nb_time_to_eat;
+	bool			is_dead;
 	struct s_philo	*philo_lst;
 }				t_simulation_data;
 
 typedef struct s_philo {
-	unsigned long		philo_nb;
-	u_timestamp			last_ate_at;
+	unsigned long		id;
 	unsigned long		nb_time_to_eat;
-	bool				is_eating;
-	bool				is_thinking;
-	bool				is_sleeping;
+	u_timestamp			last_ate_at;
 	bool				is_alive;
-	bool				fork_on_table;
 	pthread_mutex_t		fork;
 	pthread_t			thread;
 	t_simulation_data	*data;
@@ -95,20 +101,18 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 	// Simulation
 
 u_timestamp		get_time(void);
-void			ft_usleep(u_timestamp sleep_time);
 int				init_time(t_simulation_data *data);
 void			update_time(t_simulation_data *data);
 int				start_simulation(t_simulation_data *data, t_philo *head);
 t_philo			*create_philosopher_linked_list(t_simulation_data *data);
-void			print_state(t_philo *philo);
 void			start_sleeping(t_philo *philo, t_simulation_data *data);
 void			start_eating(t_philo *philo, t_simulation_data *data);
-void			start_thinking(t_philo *philo, t_simulation_data *data);
+void			start_thinking(t_philo *philo);
 bool			is_dead(t_philo *philo, t_simulation_data *data);
-void			print_took_forks(t_philo *philo);
+void			*philo_thread(void *philosopher);
 
 	// Utils
-
+void    print_status(int philo_state, t_philo *philo);
 
 	// Testing -> To be deleted before pushing
 

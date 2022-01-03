@@ -12,27 +12,6 @@
 
 #include "philosophers.h"
 
-void	*philo_thread(void *philosopher)
-{
-	t_philo *philo;
-	
-	// Start of the critical section
-	philo = (t_philo *)philosopher;
-	while (!philo->data->is_dead)
-	{
-		start_eating(philo, philo->data);
-		if (is_dead(philo, philo->data))
-			break ;
-		start_sleeping(philo, philo->data);
-		if (is_dead(philo, philo->data))
-			break ;
-		start_thinking(philo, philo->data);
-	}
-	// end of the critical section
-	printf("returning now\n");
-	return (NULL);
-}
-
 bool	all_philos_alive(t_philo *head, t_simulation_data *data)
 {
 	t_philo	*head_ptr;
@@ -42,11 +21,8 @@ bool	all_philos_alive(t_philo *head, t_simulation_data *data)
 	{
 		if (is_dead(head, data))
 		{
-			pthread_mutex_lock(&data->ts_print);
-			printf("%03llu ms Philosopher [%lu] died\n",\
-				data->curr_time, head->philo_nb);
+			print_status(DIED, head);
 			data->is_dead = true;
-			pthread_mutex_unlock(&data->ts_print);
 			return (false);
 		}
 		head = head->right_philo;
@@ -68,14 +44,6 @@ void	*data_thread(void *data)
 		usleep(100);
 		update_time(data);
 	}
-	i = 0;
-	d->is_dead = true;
-	// while (i < d->nb_of_philo)
-	// {
-	// 	pthread_join(philo->thread, NULL);
-	// 	philo = philo->right_philo;
-	// 	++i;
-	// }
 	return (NULL);
 }
 
@@ -88,7 +56,7 @@ int	start_odd(t_philo *head, int nb_philo)
 	{
 		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
 		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->philo_nb);
+			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->id);
 		}
 		i += 2;
 		if (head->right_philo != NULL && head->right_philo->right_philo)
@@ -108,7 +76,7 @@ int start_even(t_philo *head, int nb_philo)
 	{
 		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
 		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->philo_nb);
+			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->id);
 		}
 		i += 2;
 		if (head->right_philo != NULL && head->right_philo->right_philo)
