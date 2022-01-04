@@ -6,27 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/04 08:01:00 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-
-bool	all_philos_ate(t_philo *head, unsigned long amount)
-{
-	t_philo	*head_ptr;
-
-	head_ptr = head->right_philo;
-	if (head->nb_time_ate < amount)
-		return (false);
-	while (head_ptr != head)
-	{
-		if (head_ptr->nb_time_ate < amount)
-			return (false);
-		head_ptr = head_ptr->right_philo;
-	}
-	return (true);
-}
+#include "philo_bonus.h"
 
 static bool	all_philos_alive(t_philo *head, t_simulation_data *data)
 {
@@ -40,7 +24,7 @@ static bool	all_philos_alive(t_philo *head, t_simulation_data *data)
 		if (is_dead(head, data))
 		{
 			print_status(DIED, head);
-			data->is_end = true;
+			data->is_dead = true;
 			return (false);
 		}
 		--nb_philos;
@@ -61,15 +45,8 @@ void	*data_thread(void *data)
 	i = 0;
 	while (all_philos_alive(d->philo_lst, d))
 	{
-		if (all_philos_ate(philo, d->nb_time_to_eat))
-		{
-			pthread_mutex_lock(&d->ts_print);
-			write(1, "Game Ended\n", 11);
-			d->is_end = true;
-			pthread_mutex_unlock(&d->ts_print);
-			return (NULL);
-		}
-		usleep(1000);
+		usleep(100);
+		update_time(data);
 	}
 	return (NULL);
 }

@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:33:55 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 06:51:54 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 t_philo	*create_new_elem(t_simulation_data *data, unsigned long id)
 {
@@ -25,7 +25,10 @@ t_philo	*create_new_elem(t_simulation_data *data, unsigned long id)
 	new->id = id;
 	new->last_ate_at = 0;
 	new->is_alive = true;
-	new->nb_time_ate = 0;
+	if (data->has_nb_time_to_eat)
+		new->nb_time_to_eat = data->nb_time_to_eat;
+	else
+		new->nb_time_to_eat = ULONG_MAX;
 	if (pthread_mutex_init(&new->fork, NULL) != 0)
 		return (mutex_creation_error());
 	return (new);

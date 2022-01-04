@@ -6,15 +6,15 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 08:10:00 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 bool	is_dead(t_philo *philo, t_simulation_data *data)
 {
-	if (data->is_end == true)
+	if (data->is_dead == true)
 		return (true);
 	if (get_time() - philo->last_ate_at >= data->time_to_die)
 		return (true);
@@ -24,7 +24,7 @@ bool	is_dead(t_philo *philo, t_simulation_data *data)
 unsigned int	get_hungriest_philo(t_philo *philo)
 {
 	u_timestamp		farthest_last_ate;
-	unsigned long	philo_nb;
+	unsigned int	philo_nb;
 	t_philo			*ptr;
 
 	ptr = philo;
@@ -32,7 +32,7 @@ unsigned int	get_hungriest_philo(t_philo *philo)
 	philo_nb = philo->id;
 	while (1)
 	{
-		ptr = ptr->right_philo;
+		ptr = ptr->right_philo->right_philo;
 		if (ptr == philo)
 			break ;
 		if (farthest_last_ate > ptr->last_ate_at)
@@ -41,28 +41,38 @@ unsigned int	get_hungriest_philo(t_philo *philo)
 			philo_nb = ptr->id;
 		}
 	}
-	printf("the hungriest philo is %lu\n", philo_nb);
 	return (philo_nb);
 }
 
-void	lock_fork(t_philo *philo, t_simulation_data *data)
+void	start_eating(t_philo *philo, t_simulation_data *data)
 {
-	(void)data;
+	if (philo->last_ate_at && philo->id != get_hungriest_philo(philo))
+		usleep(400);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->right_philo->fork);
-		pthread_mutex_lock(&philo->fork);		
+		pthread_mutex_lock(&philo->fork);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->fork);
 		pthread_mutex_lock(&philo->right_philo->fork);	
 	}
-}
-
-void	unlock_fork(t_philo *philo, t_simulation_data *data)
-{
-	(void)data;
+	if (philo->data->is_dead)
+	{
+		pthread_mutex_unlock(&philo->right_philo->fork);
+		pthread_mutex_unlock(&philo->fork);
+		return ;
+	}
+	print_status(TOOK_FORKS, philo);
+	philo->last_ate_at = data->curr_time;
+	print_status(EATING, philo);
+	while (1)
+	{
+		if (get_time() - philo->last_ate_at >= data->time_to_eat)
+			break ;
+		usleep(200);
+	}
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->right_philo->fork);
@@ -72,46 +82,26 @@ void	unlock_fork(t_philo *philo, t_simulation_data *data)
 	{
 		pthread_mutex_unlock(&philo->fork);
 		pthread_mutex_unlock(&philo->right_philo->fork);
-	}	
-}
-
-void	start_eating(t_philo *philo, t_simulation_data *data)
-{
-	if (philo->last_ate_at && philo->id != get_hungriest_philo(philo))
-	{
-		printf("philo nb %lu waiting\n", philo->id);
-		usleep(300);
 	}
-	lock_fork(philo, data);
-	philo->last_ate_at = get_time();
-	if (philo->data->is_end)
-	{
-		unlock_fork(philo, data);
-		return ;
-	}
-	print_status(TOOK_FORKS, philo);
-	print_status(EATING, philo);
-	while (1)
-	{
-		if (get_time() - philo->last_ate_at >= data->time_to_eat)
-			break ;
-		usleep(100);
-	}
-	philo->nb_time_ate += 1;
-	unlock_fork(philo, data);
 }
 
 void	start_sleeping(t_philo *philo, t_simulation_data *data)
 {
 	print_status(SLEEPING, philo);
-	while (!data->is_end)
+	while (!data->is_dead)
 	{
 		if (get_time() - philo->last_ate_at + data->time_to_sleep >= data->time_to_sleep)
 			break ;
-		// else if (get_time() - philo->last_ate_at >= data->time_to_die)
-		// 	break ;
-		usleep(100);
+		else if (data->curr_time - philo->last_ate_at >= data->time_to_die)
+			break ;
+		usleep(200);
 	}
+}
+
+void	start_thinking(t_philo *philo)
+{
+	print_status(THINKING, philo);
+	usleep(100);
 }
 
 void	*philo_thread(void *philosopher)
@@ -124,16 +114,15 @@ void	*philo_thread(void *philosopher)
 		print_status(TOOK_LEFT_FORK, philo);
 		usleep(philo->data->time_to_die * 1000);
 	}
-	while (!philo->data->is_end)
+	while (!philo->data->is_dead)
 	{
 		start_eating(philo, philo->data);
-		if (philo->data->is_end)
+		if (philo->data->is_dead)
 			break ;
 		start_sleeping(philo, philo->data);
-		if (philo->data->is_end)
+		if (philo->data->is_dead)
 			break ;
-		print_status(THINKING, philo);
-		// usleep(100);
+		start_thinking(philo);
 	}
 	return (NULL);
 }

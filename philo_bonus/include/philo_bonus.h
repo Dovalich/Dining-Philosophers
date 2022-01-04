@@ -6,13 +6,13 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 07:10:40 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:45:25 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
+#ifndef PHILO_BONUS_H
 
-# define PHILOSOPHERS_H
+# define PHILO_BONUS_H
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -62,13 +62,13 @@ typedef struct s_simulation_data {
 	unsigned long	nb_of_philo;
 	unsigned long	nb_time_to_eat;
 	bool			has_nb_time_to_eat;
-	bool			is_end;
+	bool			is_dead;
 	struct s_philo	*philo_lst;
 }				t_simulation_data;
 
 typedef struct s_philo {
 	unsigned long		id;
-	unsigned long		nb_time_ate;
+	unsigned long		nb_time_to_eat;
 	u_timestamp			last_ate_at;
 	bool				is_alive;
 	pthread_mutex_t		fork;

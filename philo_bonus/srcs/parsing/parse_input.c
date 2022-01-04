@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:49:22 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 07:11:41 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 int	parse_input(int argc, char **argv, t_simulation_data *data)
 {
@@ -27,7 +27,7 @@ int	parse_input(int argc, char **argv, t_simulation_data *data)
 	if (argv[5])
 		if (get_nb_times_to_eat(argv[5], data) == ERROR)
 			return (error_message(PROMPT_USER_INPUT));
-	data->is_end = false;
+	data->is_dead = false;
 	data->curr_time = 0;
 	return (SUCCESS);
 }
