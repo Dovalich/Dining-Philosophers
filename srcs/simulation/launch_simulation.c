@@ -3,51 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   launch_simulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/03 15:04:30 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/04 01:23:32 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-bool	all_philos_alive(t_philo *head, t_simulation_data *data)
-{
-	t_philo	*head_ptr;
-
-	head_ptr = head;
-	while (head->right_philo != head_ptr)
-	{
-		if (is_dead(head, data))
-		{
-			print_status(DIED, head);
-			data->is_dead = true;
-			return (false);
-		}
-		head = head->right_philo;
-	}
-	return (true);
-}
-
-void	*data_thread(void *data)
-{
-	t_simulation_data	*d;
-	t_philo				*philo;
-	unsigned long		i;
-
-	d = data;
-	philo = d->philo_lst;
-	i = 0;
-	while (all_philos_alive(d->philo_lst, d))
-	{
-		usleep(100);
-		update_time(data);
-	}
-	return (NULL);
-}
-
-int	start_odd(t_philo *head, int nb_philo)
+static int	start_odd_group(t_philo *head, int nb_philo)
 {
 	int	i;
 
@@ -57,6 +22,7 @@ int	start_odd(t_philo *head, int nb_philo)
 		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
 		{
 			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->id);
+			return (error_message(THREAD_CREATION));
 		}
 		i += 2;
 		if (head->right_philo != NULL && head->right_philo->right_philo)
@@ -67,7 +33,7 @@ int	start_odd(t_philo *head, int nb_philo)
 	return (0);
 }
 
-int start_even(t_philo *head, int nb_philo)
+static int start_even_group(t_philo *head, int nb_philo)
 {
 	int	i;
 
@@ -77,6 +43,7 @@ int start_even(t_philo *head, int nb_philo)
 		if (pthread_create(&head->thread, NULL, &philo_thread, (void *)head) != 0)
 		{
 			printf("Pthread_create faillure at Philosopher nb #%lu\n", head->id);
+			return (error_message(THREAD_CREATION));
 		}
 		i += 2;
 		if (head->right_philo != NULL && head->right_philo->right_philo)
@@ -90,23 +57,32 @@ int start_even(t_philo *head, int nb_philo)
 int	start_simulation(t_simulation_data *data, t_philo *head)
 {
 	t_philo *ptr;
-	int		i;
 	
-	data->is_dead = false;
-	ptr = head->right_philo;	
+	ptr = head->right_philo;
+	if (start_even_group(ptr, data->nb_of_philo))
+		return (ERROR);
+	usleep(100);
+	if (start_odd_group(head, data->nb_of_philo))
+		return (ERROR);
+	if (pthread_create(&data->thread, NULL, &data_thread, data) == -1)
+		return (error_message(THREAD_CREATION));
+	return (SUCCESS);
+}
+
+int	terminate_simulation(t_simulation_data *data, t_philo *philo)
+{
+	unsigned long	i;
+
 	i = data->nb_of_philo;
-	data->curr_time = 0;
-	start_even(ptr, data->nb_of_philo);
-	usleep(1000);
-	start_odd(head, data->nb_of_philo);
-	pthread_create(&data->thread, NULL, &data_thread, data);
 	pthread_join(data->thread, NULL);
+	pthread_mutex_destroy(&data->ts_print);
 	while ((unsigned long)i > 0)
 	{
-		pthread_join(head->thread, NULL);
-		head = head->left_philo;
+		pthread_join(philo->thread, NULL);
+		pthread_mutex_destroy(&philo->fork);
+		if (philo->left_philo)
+			philo = philo->left_philo;
 		--i;
-		printf("joinin\n");
 	}
 	return (SUCCESS);
 }

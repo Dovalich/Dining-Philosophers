@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/03 15:06:01 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/04 01:01:14 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-// int	init_time()
-// {
-// 	if (gettimeofday(&data->tv, NULL) == -1)
-// 	{
-
-// 	data->curr_time = 0;
-// 	data->starting_time = (data->tv.tv_sec * 1000) + (data->tv.tv_usec / 1000);
-// 	return (SUCCESS);
-// }
 
 u_timestamp	get_time(void)
 {

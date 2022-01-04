@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
+#    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2021/12/23 15:14:01 by nammari          ###   ########.fr        #
+#    Updated: 2022/01/04 01:25:01 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,10 @@ SRCS_DIR	= srcs/
 
 ERROR_FILES = $(addprefix prog_exit/, free_list.c error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c parse_input_helpers.c)
-SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c ft_usleep.c\
-					 init_time.c init_philosopher_list.c philo_state.c)
-UTILS_FILES = $(addprefix utils/, tmp_test_functions.c print_state.c)
+SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c \
+					 get_update_time.c init_philosopher_list.c \
+					 data_thread.c philo_thread.c print_state.c)
+UTILS_FILES = $(addprefix utils/, tmp_test_functions.c)
 SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
  				$(UTILS_FILES)
 

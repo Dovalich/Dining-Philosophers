@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/03 14:43:46 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/04 01:23:11 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ int	main(int argc, char **argv)
 	get_time();
 	if (start_simulation(&data, head))
 		return (ERROR);
+	terminate_simulation(&data, head);
+	free_list(head);
 	return (SUCCESS);
 }
