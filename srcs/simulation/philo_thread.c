@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 12:31:00 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 12:39:10 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	*philo_thread(void *philosopher)
 		if (philo->data->is_end)
 			break ;
 		print_status(THINKING, philo);
-		// usleep(100);
+		usleep(100);
 	}
 	return (NULL);
 }
