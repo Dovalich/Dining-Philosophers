@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:36:58 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 03:57:39 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	start_simulation(t_simulation_data *data, t_philo *head)
 	ptr = head->right_philo;
 	if (start_even_group(ptr, data->nb_of_philo))
 		return (ERROR);
-	usleep(100);
+	// usleep(1000);
 	if (start_odd_group(head, data->nb_of_philo))
 		return (ERROR);
 	if (pthread_create(&data->thread, NULL, &data_thread, data) == -1)
@@ -83,7 +83,6 @@ int	terminate_simulation(t_simulation_data *data, t_philo *philo)
 		if (philo->left_philo)
 			philo = philo->left_philo;
 		--i;
-		printf("joining\n");
 	}
 	return (SUCCESS);
 }
