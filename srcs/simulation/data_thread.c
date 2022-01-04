@@ -6,30 +6,26 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/04 03:39:32 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:26:31 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static bool	all_philos_alive(t_philo *head, t_simulation_data *data)
+static bool	all_philos_alive(t_philo *philo_lst, t_simulation_data *data)
 {
-	t_philo	*head_ptr;
-	unsigned long	nb_philos;
+	unsigned long	i;
 
-	head_ptr = head;
-	nb_philos = data->nb_of_philo;
-	while (nb_philos)
+	i = 0;
+	while (i < data->nb_of_philo)
 	{
-		if (is_dead(head, data))
+		if (is_dead(philo_lst[i], data))
 		{
-			print_status(DIED, head);
+			print_status(DIED, philo_lst);
 			data->is_dead = true;
 			return (false);
 		}
-		--nb_philos;
-		if (head->right_philo)
-			head = head->right_philo;
+		++i;
 	}
 	return (true);
 }
@@ -38,14 +34,12 @@ void	*data_thread(void *data)
 {
 	t_simulation_data	*d;
 	t_philo				*philo;
-	unsigned long		i;
 
 	d = data;
 	philo = d->philo_lst;
-	i = 0;
 	while (all_philos_alive(d->philo_lst, d))
 	{
-		usleep(100);
+		usleep(1000);
 		update_time(data);
 	}
 	return (NULL);

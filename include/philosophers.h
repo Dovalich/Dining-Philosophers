@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:30:35 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 06:08:33 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,9 @@ typedef struct s_philo {
 	unsigned long		nb_time_to_eat;
 	u_timestamp			last_ate_at;
 	bool				is_alive;
-	pthread_mutex_t		fork;
+	pthread_mutex_t		*forks;
 	pthread_t			thread;
 	t_simulation_data	*data;
-	struct s_philo		*left_philo;
-	struct s_philo		*right_philo;
 }				t_philo;
 
 // ------------------------------------------------------------------------ //
@@ -103,7 +101,7 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 u_timestamp		get_time(void);
 void			update_time(t_simulation_data *data);
-bool			is_dead(t_philo *philo, t_simulation_data *data);
+bool			is_dead(t_philo philo, t_simulation_data *data);
 t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 void			*philo_thread(void *philosopher);
 void			*data_thread(void *data);
