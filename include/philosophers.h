@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 15:19:58 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 16:18:13 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,10 @@ typedef struct s_simulation_data {
 	u_timestamp		time_to_die;
 	u_timestamp		time_to_eat;
 	u_timestamp		time_to_sleep;
-	u_timestamp		starting_time;
-	u_timestamp		curr_time;
 	pthread_mutex_t	ts_print;
 	pthread_t		thread;
 	unsigned long	nb_of_philo;
 	unsigned long	nb_time_to_eat;
-	bool			has_nb_time_to_eat;
 	bool			is_end;
 	struct s_philo	*philo_lst;
 }				t_simulation_data;
@@ -70,12 +67,9 @@ typedef struct s_philo {
 	unsigned long		id;
 	unsigned long		nb_time_ate;
 	u_timestamp			last_ate_at;
-	bool				is_alive;
-	pthread_mutex_t		fork;
+	pthread_mutex_t		*forks;
 	pthread_t			thread;
 	t_simulation_data	*data;
-	struct s_philo		*left_philo;
-	struct s_philo		*right_philo;
 }				t_philo;
 
 // ------------------------------------------------------------------------ //
@@ -102,10 +96,7 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 	// Simulation
 
 u_timestamp		get_time(void);
-void			update_time(t_simulation_data *data);
-bool			is_dead(t_philo *philo, t_simulation_data *data);
-t_philo			*create_philosopher_linked_list(t_simulation_data *data);
-void			*philo_thread(void *philosopher);
+void			*philo_thread(t_philo *philo);
 void			*data_thread(void *data);
 int				start_simulation(t_simulation_data *data, t_philo *head);
 int				terminate_simulation(t_simulation_data *data, t_philo *philo);

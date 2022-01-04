@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:49:22 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 07:11:41 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 16:11:23 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,5 @@ int	parse_input(int argc, char **argv, t_simulation_data *data)
 		if (get_nb_times_to_eat(argv[5], data) == ERROR)
 			return (error_message(PROMPT_USER_INPUT));
 	data->is_end = false;
-	data->curr_time = 0;
 	return (SUCCESS);
 }

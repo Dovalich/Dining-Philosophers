@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 15:19:28 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 17:30:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,19 @@ u_timestamp	get_time(void)
 	return (current_timestamp);
 }
 
-void	update_time(t_simulation_data *data)
-{
-	data->curr_time = get_time();
-}
-
 void	custom_usleep(u_timestamp sleep_for)
 {
 	u_timestamp	curr;
+	u_timestamp	start;
+	u_timestamp	end;
 
-	curr = get_time();
-	while (get_time() - curr < sleep_for)
+	start = get_time();
+	end = start + sleep_for;
+	while (1)
+	{
+		curr = get_time();
+		if (curr >= end)
+			break ;
 		usleep(100);
+	}
 }

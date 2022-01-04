@@ -6,46 +6,49 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/04 15:17:02 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 16:08:59 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-bool	all_philos_ate(t_philo *head, unsigned long amount)
+bool	is_dead(t_philo philo, t_simulation_data *data)
 {
-	t_philo	*head_ptr;
+	if (data->is_end == true)
+		return (true);
+	if (get_time() - philo.last_ate_at >= data->time_to_die)
+		return (true);
+	return (false);
+}
 
-	head_ptr = head->right_philo;
-	if (head->nb_time_ate < amount)
-		return (false);
-	while (head_ptr != head)
+bool	all_philos_ate(t_philo *philo_lst, t_simulation_data *data)
+{
+	unsigned long	i;
+
+	i = 0;
+	while (i < data->nb_of_philo)
 	{
-		if (head_ptr->nb_time_ate < amount)
+		if (philo_lst[i].nb_time_ate < data->nb_time_to_eat)
 			return (false);
-		head_ptr = head_ptr->right_philo;
+		++i;
 	}
 	return (true);
 }
 
-static bool	all_philos_alive(t_philo *head, t_simulation_data *data)
+static bool	all_philos_alive(t_philo *philo_lst, t_simulation_data *data)
 {
-	t_philo	*head_ptr;
-	unsigned long	nb_philos;
+	unsigned long	i;
 
-	head_ptr = head;
-	nb_philos = data->nb_of_philo;
-	while (nb_philos)
+	i = 0;
+	while (i < data->nb_of_philo)
 	{
-		if (is_dead(head, data))
+		if (is_dead(philo_lst[i], data))
 		{
-			print_status(DIED, head);
+			print_status(DIED, philo_lst);
 			data->is_end = true;
 			return (false);
 		}
-		--nb_philos;
-		if (head->right_philo)
-			head = head->right_philo;
+		++i;
 	}
 	return (true);
 }
@@ -61,7 +64,7 @@ void	*data_thread(void *data)
 	i = 0;
 	while (all_philos_alive(d->philo_lst, d))
 	{
-		if (all_philos_ate(philo, d->nb_time_to_eat))
+		if (all_philos_ate(philo, d))
 		{
 			pthread_mutex_lock(&d->ts_print);
 			write(1, "Game Ended\n", 11);
