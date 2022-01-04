@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:23:32 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 01:36:58 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	terminate_simulation(t_simulation_data *data, t_philo *philo)
 		if (philo->left_philo)
 			philo = philo->left_philo;
 		--i;
+		printf("joining\n");
 	}
 	return (SUCCESS);
 }
