@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:38:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:13:01 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 01:28:32 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ void	*malloc_error(char *error_msg)
 
 void	*mutex_creation_error(void)
 {
-	printf("Mutex_init_failed at Philosopher\n");
+	ft_putstr_fd("Mutex_init_failed at Philosopher\n", 2);
 	return (NULL);
 }

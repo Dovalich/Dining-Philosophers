@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:22:08 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 01:30:35 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define BUFFER_SIZE 128
+
 typedef unsigned long long u_timestamp;
 
 enum error_flags {
@@ -102,16 +103,12 @@ int				get_nb_times_to_eat(char *argv, t_simulation_data *data);
 
 u_timestamp		get_time(void);
 void			update_time(t_simulation_data *data);
-int				start_simulation(t_simulation_data *data, t_philo *head);
-t_philo			*create_philosopher_linked_list(t_simulation_data *data);
-void			start_sleeping(t_philo *philo, t_simulation_data *data);
-void			start_eating(t_philo *philo, t_simulation_data *data);
-void			start_thinking(t_philo *philo);
 bool			is_dead(t_philo *philo, t_simulation_data *data);
+t_philo			*create_philosopher_linked_list(t_simulation_data *data);
 void			*philo_thread(void *philosopher);
 void			*data_thread(void *data);
+int				start_simulation(t_simulation_data *data, t_philo *head);
 int				terminate_simulation(t_simulation_data *data, t_philo *philo);
-	// Utils
 void			print_status(int philo_state, t_philo *philo);
 
 	// Testing -> To be deleted before pushing

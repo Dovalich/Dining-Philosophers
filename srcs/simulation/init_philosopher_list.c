@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_philosopher_list.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:33:55 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/24 13:49:56 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/04 01:28:10 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,11 @@ t_philo	*create_philosopher_linked_list(t_simulation_data *data)
 		if (elem_push_back(&head, create_new_elem(data, i + 1)) != SUCCESS)
 		{
 			free_list(head);
-			printf("Error: Malloc faillure on""\
-					 create_philosopher_linked_list\n");
+			ft_putstr_fd("Error: Malloc faillure on"
+					 "create_philosopher_linked_list\n", 2);
 			return (NULL);
 		}
 		++i;
 	}
 	return (head);
 }
-

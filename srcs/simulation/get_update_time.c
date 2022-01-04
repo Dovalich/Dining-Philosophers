@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_time.c                                        :+:      :+:    :+:   */
+/*   get_update_time.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 01:01:14 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 01:27:30 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ u_timestamp	get_time(void)
 	{
 		if (gettimeofday(&tv, NULL) == -1)
 		{
-			printf("There was an error with Gettimeofday\n");
+			ft_putstr_fd("There was an error with Gettimeofday\n", 2);
 			return (ERROR);	
 		}
 		starting_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
