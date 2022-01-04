@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 07:10:40 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 15:19:58 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void			*data_thread(void *data);
 int				start_simulation(t_simulation_data *data, t_philo *head);
 int				terminate_simulation(t_simulation_data *data, t_philo *philo);
 void			print_status(int philo_state, t_philo *philo);
+void			custom_usleep(u_timestamp sleep_for);
 
 	// Testing -> To be deleted before pushing
 

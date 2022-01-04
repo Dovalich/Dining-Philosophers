@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/04 12:40:15 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 15:17:02 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*data_thread(void *data)
 			pthread_mutex_unlock(&d->ts_print);
 			return (NULL);
 		}
-		usleep(500);
+		usleep(200);
 	}
 	return (NULL);
 }

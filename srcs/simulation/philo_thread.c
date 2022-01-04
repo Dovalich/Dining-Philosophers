@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 12:39:10 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 15:20:38 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ void	unlock_fork(t_philo *philo, t_simulation_data *data)
 
 void	start_eating(t_philo *philo, t_simulation_data *data)
 {
-	// if (philo->last_ate_at && philo->id != get_hungriest_philo(philo))
-	// {
-	// 	// printf("philo nb %lu waiting\n", philo->id);
-	// 	usleep(300);
-	// }
 	lock_fork(philo, data);
 	philo->last_ate_at = get_time();
 	if (philo->data->is_end)
@@ -91,12 +86,7 @@ void	start_eating(t_philo *philo, t_simulation_data *data)
 	}
 	print_status(TOOK_FORKS, philo);
 	print_status(EATING, philo);
-	while (1)
-	{
-		if (get_time() - philo->last_ate_at >= data->time_to_eat)
-			break ;
-		usleep(100);
-	}
+	custom_usleep(data->time_to_eat);
 	philo->nb_time_ate += 1;
 	unlock_fork(philo, data);
 }
@@ -107,14 +97,7 @@ void	start_sleeping(t_philo *philo, t_simulation_data *data)
 
 	print_status(SLEEPING, philo);
 	curr = get_time();
-	while (!data->is_end)
-	{
-		if (get_time() - curr >= data->time_to_sleep)
-			break ;
-		else if (get_time() - philo->last_ate_at >= data->time_to_die)
-			break ;
-		usleep(100);
-	}
+	custom_usleep(data->time_to_sleep);
 }
 
 void	*philo_thread(void *philosopher)
