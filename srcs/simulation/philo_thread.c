@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 08:43:07 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 12:31:00 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,16 @@ void	start_eating(t_philo *philo, t_simulation_data *data)
 
 void	start_sleeping(t_philo *philo, t_simulation_data *data)
 {
+	u_timestamp	curr;
+
 	print_status(SLEEPING, philo);
+	curr = get_time();
 	while (!data->is_end)
 	{
-		if (get_time() - philo->last_ate_at + data->time_to_sleep >= data->time_to_sleep)
+		if (get_time() - curr >= data->time_to_sleep)
 			break ;
-		// else if (get_time() - philo->last_ate_at >= data->time_to_die)
-		// 	break ;
+		else if (get_time() - philo->last_ate_at >= data->time_to_die)
+			break ;
 		usleep(100);
 	}
 }
