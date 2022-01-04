@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 08:10:00 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 08:43:07 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ unsigned int	get_hungriest_philo(t_philo *philo)
 			philo_nb = ptr->id;
 		}
 	}
-	printf("the hungriest philo is %lu\n", philo_nb);
+	// printf("the hungriest philo is %lu\n", philo_nb);
 	return (philo_nb);
 }
 
@@ -77,11 +77,11 @@ void	unlock_fork(t_philo *philo, t_simulation_data *data)
 
 void	start_eating(t_philo *philo, t_simulation_data *data)
 {
-	if (philo->last_ate_at && philo->id != get_hungriest_philo(philo))
-	{
-		printf("philo nb %lu waiting\n", philo->id);
-		usleep(300);
-	}
+	// if (philo->last_ate_at && philo->id != get_hungriest_philo(philo))
+	// {
+	// 	// printf("philo nb %lu waiting\n", philo->id);
+	// 	usleep(300);
+	// }
 	lock_fork(philo, data);
 	philo->last_ate_at = get_time();
 	if (philo->data->is_end)
