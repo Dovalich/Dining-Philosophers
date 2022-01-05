@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 16:18:13 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/05 17:23:12 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <limits.h>
+# include <fcntl.h>
 # include "../custom_library/includes/utils_lib.h"
 
 // Error Enum & Defines ---------------------------------------------------- // 
