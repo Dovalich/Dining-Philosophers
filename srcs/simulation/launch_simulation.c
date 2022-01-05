@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 17:48:05 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/05 10:21:29 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	start_simulation(t_simulation_data *data, t_philo *philo_lst)
 {
 	if (start_even_group(philo_lst, data->nb_of_philo))
 		return (ERROR);
-	usleep(1000);
+	usleep(100);
 	if (start_odd_group(philo_lst, data->nb_of_philo))
 		return (ERROR);
 	if (pthread_create(&data->thread, NULL, &data_thread, data) == -1)

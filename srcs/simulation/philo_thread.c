@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 17:52:17 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/05 10:47:33 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	lock_fork(t_philo *philo, t_simulation_data *data)
 {
-	(void)data;
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->forks[philo->id % data->nb_of_philo]);
@@ -29,7 +28,6 @@ void	lock_fork(t_philo *philo, t_simulation_data *data)
 
 void	unlock_fork(t_philo *philo, t_simulation_data *data)
 {
-	(void)data;
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->forks[philo->id % data->nb_of_philo]);
