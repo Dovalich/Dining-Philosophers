@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 17:30:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philosophers.h"
 
 u_timestamp	get_time(void)
 {
@@ -34,7 +34,19 @@ u_timestamp	get_time(void)
 	return (current_timestamp);
 }
 
-void	update_time(t_simulation_data *data)
+void	custom_usleep(u_timestamp sleep_for)
 {
-	data->curr_time = get_time();
+	u_timestamp	curr;
+	u_timestamp	start;
+	u_timestamp	end;
+
+	start = get_time();
+	end = start + sleep_for;
+	while (1)
+	{
+		curr = get_time();
+		if (curr >= end)
+			break ;
+		usleep(100);
+	}
 }

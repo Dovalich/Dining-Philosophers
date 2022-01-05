@@ -6,7 +6,7 @@
 #    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/04 01:25:01 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/04 16:15:07 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,16 @@ GRN			= \033[0;32m
 RM			= rm -rf
 CC			= clang
 CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address #-v
-NAME		= philo_bonus
+NAME		= philosophers
 SRCS_DIR	= srcs/
 
 
-ERROR_FILES = $(addprefix prog_exit/, free_list.c error_management.c)
+ERROR_FILES = $(addprefix prog_exit/, error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c parse_input_helpers.c)
 SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c \
-					 get_update_time.c init_philosopher_list.c \
+					 get_update_time.c \
 					 data_thread.c philo_thread.c print_state.c)
-UTILS_FILES = $(addprefix utils/, tmp_test_functions.c)
+UTILS_FILES = #$(addprefix utils/)
 SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
  				$(UTILS_FILES)
 

@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:38:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 06:44:50 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/04 01:28:32 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philosophers.h"
 
 int	error_message(int error_type)
 {

@@ -1,4 +1,4 @@
-#include "philo_bonus.h"
+#include "philosophers.h"
 
 static size_t digit_len(u_timestamp nb)
 {
@@ -46,7 +46,7 @@ static void copy_str_to_buffer(const char *str, char **buffer)
 
 static void buffer_state(const char *str, t_philo *philo, char **buffer)
 {
-    copy_int_as_str_to_buffer(philo->data->curr_time, buffer);
+    copy_int_as_str_to_buffer(get_time(), buffer);
     copy_str_to_buffer(" ms philosopher nb ", buffer);
     copy_int_as_str_to_buffer(philo->id, buffer);
     copy_str_to_buffer(str, buffer);
@@ -59,6 +59,11 @@ void    print_status(int philo_state, t_philo *philo)
     char        buffer[BUFFER_SIZE];
     
     pthread_mutex_lock(&philo->data->ts_print);
+    if (philo->data->is_end)
+    {
+        pthread_mutex_unlock(&philo->data->ts_print);
+        return ;
+    }
     buffer_offset = buffer;
     memset(buffer, 0, BUFFER_SIZE);
     state[SLEEPING] = " is sleeping\n";
