@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/05 17:23:12 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/06 19:46:23 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <pthread.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <semaphore.h>
+# include <sys/stat.h>
 # include "../custom_library/includes/utils_lib.h"
 
 // Error Enum & Defines ---------------------------------------------------- // 
@@ -29,6 +31,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define BUFFER_SIZE 128
+# define SEM_NAME_FORKS "forks"
 
 typedef unsigned long long u_timestamp;
 

@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": true,
     "files.associations": {
-        "philosophers.h": "c"
+        "philosophers.h": "c",
+        "stat.h": "c"
     }
 }
