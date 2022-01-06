@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
+#    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/04 16:15:07 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/06 20:13:43 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ GRN			= \033[0;32m
 RM			= rm -rf
 CC			= clang
 CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address #-v
-NAME		= philosophers
+NAME		= philo_bonus
 SRCS_DIR	= srcs/
 
 

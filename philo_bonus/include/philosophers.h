@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/06 19:46:23 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/06 20:16:24 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include <semaphore.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include "../custom_library/includes/utils_lib.h"
 
 // Error Enum & Defines ---------------------------------------------------- // 

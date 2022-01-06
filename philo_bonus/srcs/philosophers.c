@@ -6,7 +6,7 @@
 /*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/06 19:55:36 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/06 20:55:36 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 // }
 
 
-# define NB_PHILO 10
+# define NB_PHILO 2
 
 int	_err_(char *str)
 {
@@ -54,7 +54,13 @@ int	routine(int	i)
 	if (sem_fork == SEM_FAILED)
 		return (_err_("Sem failed in child"));
 	else
-		printf("I'm child nb %d\n", i);
+	{
+		printf("I'm child nb %d doing my work...\n", i);
+		sem_wait(sem_fork);
+		printf("inside sem_wait\n");
+		sleep(2);
+		sem_post(sem_fork);
+	}
 	return (0);
 }
 
@@ -63,20 +69,28 @@ int	main(void)
 	pid_t	pids[NB_PHILO];
 	sem_t	*sem_forks;
 	int		i;
-	//sem_t	*sem_print_ts;
 
-	sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, 0777, NB_PHILO);
+	sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, S_IRUSR | S_IWUSR, 0);
 	if (sem_forks == SEM_FAILED)
 		return (_err_(SEM_NAME_FORKS " failed to open"));
 	i = 0;
+	sem_post(sem_forks);
 	while (i < NB_PHILO)
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)
 		{
-			++i;
 			routine(i);
+			return (SUCCESS);
 		}
+		++i;
 	}
+	i = 0;
+	while (i < NB_PHILO)
+	{
+		waitpid(pids[i], NULL, 0);
+		++i;
+	}
+	printf("I'm main here's my id: %d and i'm terminating\n",getpid());
 	return (SUCCESS);
 }
