@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 23:42:27 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,16 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 		else if (pids[i] == 0)
 		{
 			signal(SIGINT, &suicide);
-			if (philo_process(philo, data, i))
-				return (ERROR);
-			return (0);
+			if (philo_process(philo, data, i + 1))
+				exit(ERROR);
+			exit(SUCCESS);
 		}
 		++i;
 	}
 	while (i > 0)
 	{
-		waitpid(pids[i - 1], NULL, 0);
+		waitpid(-1, NULL, 0);
+		kill_children_process(pids, data->nb_of_philo);
 		--i;
 	}
 	return (SUCCESS);

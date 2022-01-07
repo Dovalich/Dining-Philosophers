@@ -59,7 +59,7 @@ void    print_status(int philo_state, t_philo *philo)
     char        buffer[BUFFER_SIZE];
     
     if (sem_wait(philo->buttler->print_ts) == -1)
-        return ;
+        exit(0);
     buffer_offset = buffer;
     memset(buffer, 0, BUFFER_SIZE);
     state[SLEEPING] = " is sleeping\n";
@@ -76,5 +76,6 @@ void    print_status(int philo_state, t_philo *philo)
     else
         buffer_state(state[philo_state], philo, &buffer_offset);
     write(1, buffer, ft_strlen(buffer));
-    sem_post(philo->buttler->print_ts);
+    if (philo_state != DIED)
+        sem_post(philo->buttler->print_ts);
 }

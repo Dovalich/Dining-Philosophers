@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 23:31:20 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ void	start_eating(t_philo *philo, t_buttler *data)
 {
 	lock_fork(philo);
 	philo->last_ate_at = get_time();
-	if (data->is_end)
-	{
-		unlock_fork(philo);
-		return ;
-	}
 	print_status(TOOK_FORKS, philo);
 	print_status(EATING, philo);
 	philo->nb_time_ate += 1;
@@ -53,25 +48,56 @@ void	start_sleeping(t_philo *philo, t_buttler *data)
 	custom_usleep(data->time_to_sleep);
 }
 
+void	*buttler_thread(void *dat)
+{
+	t_buttler	*data;
+
+	data = (t_buttler *)dat;
+	while (!data->is_end)
+	{
+		if (get_time() - data->philo->last_ate_at >= data->time_to_die)
+		{
+			print_status(DIED, data->philo);
+			data->is_end = true;
+			return (NULL);
+		}
+		usleep(100);
+	}
+	return (NULL);
+}
+
 int	philo_process(t_philo *philo, t_buttler *buttler, int id)
-{	
+{
 	philo->fork = sem_open(SEM_NAME_FORKS, 0);
 	buttler->print_ts = sem_open(SEM_NAME_PRINT_TS, 0);
-	buttler->end_simulation = sem_open(SEM_NAME_END, 0);
-	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED || buttler->end_simulation == SEM_FAILED)
+	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED)
 		return (error_message(SEMAPHORE_CREATION));
 	philo->id = id;
 	if (pthread_create(&buttler->thread, NULL, &buttler_thread, (void *)buttler) == -1)
 		return (error_message(THREAD_CREATION));
 	while (!buttler->is_end)
 	{
+		if (philo->nb_time_ate == buttler->nb_time_to_eat)
+		{
+			sem_wait(buttler->print_ts);
+			write(1, "Game Ended\n", 11);
+			buttler->is_end = true;
+			break ;
+		}
+		if (!buttler->is_end)
+			break ;
 		start_eating(philo, buttler);
+		if (!buttler->is_end)
+			break ;
 		start_sleeping(philo, buttler);
+		if (!buttler->is_end)
+			break ;
 		print_status(THINKING, philo);
+		if (!buttler->is_end)
+			break ;
 		usleep(100);
 	}
-	sem_close(philo->fork);
-	sem_close(buttler->end_simulation);
-	sem_close(buttler->print_ts);
+	pthread_join(buttler->thread, NULL);
+	exit(0);
 	return (SUCCESS);
 }

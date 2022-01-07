@@ -35,7 +35,6 @@
 # define BUFFER_SIZE 128
 # define SEM_NAME_FORKS "forks"
 # define SEM_NAME_PRINT_TS "print_ts"
-# define SEM_NAME_END "end_simulation"
 
 typedef unsigned long long u_timestamp;
 
@@ -66,7 +65,6 @@ typedef struct s_buttler {
 	u_timestamp		time_to_eat;
 	u_timestamp		time_to_sleep;
 	sem_t			*print_ts;
-	sem_t			*end_simulation;
 	pthread_t		thread;
 	unsigned long	nb_of_philo;
 	unsigned long	nb_time_to_eat;
@@ -75,7 +73,6 @@ typedef struct s_buttler {
 }				t_buttler;
 
 typedef struct s_philo {
-	pid_t				pid;
 	unsigned long		id;
 	unsigned long		nb_time_ate;
 	u_timestamp			last_ate_at;
@@ -114,6 +111,7 @@ void			print_status(int philo_state, t_philo *philo);
 void			custom_usleep(u_timestamp sleep_for);
 int				philo_process(t_philo *philo, t_buttler *buttler, int id);
 void			suicide(int signal);
+void			kill_children_process(int pids[], unsigned int nb);
 
 // ---------------------------------------------------------------------- //
 

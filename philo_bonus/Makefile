@@ -6,7 +6,7 @@
 #    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/07 22:01:49 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/07 22:09:38 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ YEL			= \033[0;33m
 GRN			= \033[0;32m
 RM			= rm -rf
 CC			= clang
-CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address #-v
+CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address
 NAME		= philo_bonus
 SRCS_DIR	= srcs/
 
@@ -64,7 +64,7 @@ $(OBJS_DIR):
 
 $(NAME): $(OBJS_DIR) $(OBJ)
 	make -C $(LIBRARY)
-	$(CC) $(CFLAGS) $(OBJ) -lpthread -o $(NAME) custom_library/my_library.a
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) custom_library/my_library.a
 	@printf "$(WHT)[$(GRN)$(NAME) COMPILED$(WHT)]\n"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(include)
