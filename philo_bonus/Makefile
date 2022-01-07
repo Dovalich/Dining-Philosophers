@@ -6,7 +6,7 @@
 #    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/07 17:02:38 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/07 22:01:49 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,7 @@ SRCS_DIR	= srcs/
 ERROR_FILES = $(addprefix prog_exit/, error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c parse_input_helpers.c)
 SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c \
-					 get_update_time.c \
-					philo_thread.c print_state.c)
+					get_update_time.c philo_thread.c print_state.c)
 
 SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)
 
@@ -65,7 +64,7 @@ $(OBJS_DIR):
 
 $(NAME): $(OBJS_DIR) $(OBJ)
 	make -C $(LIBRARY)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) custom_library/my_library.a
+	$(CC) $(CFLAGS) $(OBJ) -lpthread -o $(NAME) custom_library/my_library.a
 	@printf "$(WHT)[$(GRN)$(NAME) COMPILED$(WHT)]\n"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(include)

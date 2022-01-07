@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 17:54:07 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 int	kill_all(int *pids, int index, int return_status)
 {
@@ -29,7 +29,6 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 
 	i = 0;
 	get_time();
-	(void)philo;
 	while (i < data->nb_of_philo)
 	{
 		pids[i] = fork();
@@ -37,13 +36,17 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 			return (kill_all(pids, i, ERROR));
 		else if (pids[i] == 0)
 		{
-			printf("here's my pid %d\n", getpid());
+			signal(SIGINT, &suicide);
 			if (philo_process(philo, data, i))
 				return (ERROR);
-			// exit(0);
 			return (0);
 		}
 		++i;
+	}
+	while (i > 0)
+	{
+		waitpid(pids[i - 1], NULL, 0);
+		--i;
 	}
 	return (SUCCESS);
 }

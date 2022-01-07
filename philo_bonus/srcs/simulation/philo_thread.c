@@ -6,22 +6,22 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 18:02:45 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 void	lock_fork(t_philo *philo)
 {
-	sem_wait(philo->fork);
-	sem_wait(philo->fork);
+	if (sem_wait(philo->fork) == -1 || sem_wait(philo->fork) == -1)
+		return ;
 }
 
 void	unlock_fork(t_philo *philo)
 {
-	sem_post(philo->fork);
-	sem_post(philo->fork);
+	if (sem_post(philo->fork) == -1 || sem_post(philo->fork) == -1)
+		return ;
 }
 
 void	start_eating(t_philo *philo, t_buttler *data)
@@ -42,11 +42,9 @@ void	start_eating(t_philo *philo, t_buttler *data)
 
 void	suicide(int signal)
 {
-	if (signal == SIGQUIT || signal == SIGKILL)
-	{
-		printf("-++++++++++++++++++++++++++++++CHILD ++++++++\n\n\n\n");
-		kill(getpid(), SIGKILL);
-	}
+	(void)signal;
+	printf("Child with id %d and parent %d is getting killed \n", getpid(), getppid());
+	kill(getpid(), SIGKILL);
 }
 
 void	start_sleeping(t_philo *philo, t_buttler *data)
@@ -56,21 +54,24 @@ void	start_sleeping(t_philo *philo, t_buttler *data)
 }
 
 int	philo_process(t_philo *philo, t_buttler *buttler, int id)
-{
+{	
 	philo->fork = sem_open(SEM_NAME_FORKS, 0);
 	buttler->print_ts = sem_open(SEM_NAME_PRINT_TS, 0);
-	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED)
+	buttler->end_simulation = sem_open(SEM_NAME_END, 0);
+	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED || buttler->end_simulation == SEM_FAILED)
 		return (error_message(SEMAPHORE_CREATION));
-	philo->id = id + 1;
-	// if (pthread_create(&buttler->thread, NULL, &buttler_thread, buttler) == -1)
-		// return (error_message(THREAD_CREATION));
+	philo->id = id;
+	if (pthread_create(&buttler->thread, NULL, &buttler_thread, (void *)buttler) == -1)
+		return (error_message(THREAD_CREATION));
 	while (!buttler->is_end)
 	{
 		start_eating(philo, buttler);
 		start_sleeping(philo, buttler);
 		print_status(THINKING, philo);
 		usleep(100);
-		signal(SIGQUIT, &suicide);
 	}
+	sem_close(philo->fork);
+	sem_close(buttler->end_simulation);
+	sem_close(buttler->print_ts);
 	return (SUCCESS);
 }

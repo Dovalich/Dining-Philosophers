@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philo_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:12:07 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 17:40:47 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:02:49 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
 
-# define PHILOSOPHERS_H
+# define PHILOSOPHERS_BONUS_H
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -35,6 +35,7 @@
 # define BUFFER_SIZE 128
 # define SEM_NAME_FORKS "forks"
 # define SEM_NAME_PRINT_TS "print_ts"
+# define SEM_NAME_END "end_simulation"
 
 typedef unsigned long long u_timestamp;
 
@@ -65,6 +66,7 @@ typedef struct s_buttler {
 	u_timestamp		time_to_eat;
 	u_timestamp		time_to_sleep;
 	sem_t			*print_ts;
+	sem_t			*end_simulation;
 	pthread_t		thread;
 	unsigned long	nb_of_philo;
 	unsigned long	nb_time_to_eat;
@@ -78,7 +80,6 @@ typedef struct s_philo {
 	unsigned long		nb_time_ate;
 	u_timestamp			last_ate_at;
 	sem_t				*fork;
-	pthread_t			thread;
 	t_buttler			*buttler;
 }				t_philo;
 
@@ -105,17 +106,15 @@ int				get_nb_times_to_eat(char *argv, t_buttler *data);
 
 	// Simulation
 
-u_timestamp		get_time(void);
 void			*buttler_thread(void *data);
+u_timestamp		get_time(void);
 int				start_simulation(t_buttler *data, t_philo *head);
 int				terminate_simulation(t_buttler *data, t_philo *philo);
 void			print_status(int philo_state, t_philo *philo);
 void			custom_usleep(u_timestamp sleep_for);
 int				philo_process(t_philo *philo, t_buttler *buttler, int id);
+void			suicide(int signal);
 
-	// Testing -> To be deleted before pushing
-
-void			print_list(t_philo *head, t_buttler *data);
 // ---------------------------------------------------------------------- //
 
 #endif

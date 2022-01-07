@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:54:33 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 17:30:21 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 u_timestamp	get_time(void)
 {

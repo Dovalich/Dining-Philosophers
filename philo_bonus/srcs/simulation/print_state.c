@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 static size_t digit_len(u_timestamp nb)
 {
@@ -58,12 +58,8 @@ void    print_status(int philo_state, t_philo *philo)
     char        *buffer_offset;
     char        buffer[BUFFER_SIZE];
     
-    sem_wait(philo->buttler->print_ts);
-    if (philo->buttler->is_end)
-    {
-        sem_post(philo->buttler->print_ts);
+    if (sem_wait(philo->buttler->print_ts) == -1)
         return ;
-    }
     buffer_offset = buffer;
     memset(buffer, 0, BUFFER_SIZE);
     state[SLEEPING] = " is sleeping\n";

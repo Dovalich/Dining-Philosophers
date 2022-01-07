@@ -6,11 +6,11 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:49:22 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 16:59:09 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 int	parse_input(int argc, char **argv, t_buttler *data)
 {

@@ -6,73 +6,44 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/07 17:02:25 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo_bonus.h"
 
-bool	is_dead(t_philo philo, t_buttler *data)
+void	*buttler_thread(void *dat)
 {
-	if (data->is_end == true)
-		return (true);
-	if (get_time() - philo.last_ate_at >= data->time_to_die)
-		return (true);
-	return (false);
-}
+	t_buttler	*data;
 
-bool	all_philos_ate(t_philo *philo_lst, t_buttler *data)
-{
-	unsigned long	i;
-
-	i = 0;
-	while (i < data->nb_of_philo)
+	data = (t_buttler *)dat;
+	data->end_simulation = sem_open(SEM_NAME_END, 0);
+	if (data->end_simulation == SEM_FAILED)
+		return (NULL);
+	while (!data->is_end)
 	{
-		if (philo_lst[i].nb_time_ate < data->nb_time_to_eat)
-			return (false);
-		++i;
-	}
-	return (true);
-}
-
-static bool	all_philos_alive(t_philo *philo_lst, t_buttler *data)
-{
-	unsigned long	i;
-
-	i = 0;
-	while (i < data->nb_of_philo)
-	{
-		if (is_dead(philo_lst[i], data))
+		if (sem_wait(data->end_simulation) == -1)
 		{
-			print_status(DIED, philo_lst);
 			data->is_end = true;
-			return (false);
-		}
-		++i;
-	}
-	return (true);
-}
-
-void	*data_thread(void *data)
-{
-	t_buttler	*d;
-	t_philo				*philo;
-	unsigned long		i;
-
-	d = data;
-	philo = d->philo_lst;
-	i = 0;
-	while (all_philos_alive(d->philo_lst, d))
-	{
-		if (all_philos_ate(philo, d))
-		{
-			pthread_mutex_lock(&d->ts_print);
-			write(1, "Game Ended\n", 11);
-			d->is_end = true;
-			pthread_mutex_unlock(&d->ts_print);
 			return (NULL);
 		}
-		usleep(200);
+		else
+			sem_post(data->end_simulation);
+		if (data->philo->nb_time_ate == data->nb_time_to_eat)
+		{
+			sem_wait(data->print_ts);
+			write(1, "Game Ended\n", 11);
+			data->is_end = true;
+			sem_post(data->print_ts);
+			return (NULL);
+		}
+		else if (get_time() - data->philo->last_ate_at >= 0)
+		{
+			print_status(DIED, data->philo);
+			data->is_end = true;
+			return (NULL);
+		}
+		usleep(1000);
 	}
 	return (NULL);
 }
