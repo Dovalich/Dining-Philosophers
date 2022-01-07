@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
+#    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/06 20:13:43 by nammari          ###   ########.fr        #
+#    Updated: 2022/01/07 17:02:38 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,9 @@ ERROR_FILES = $(addprefix prog_exit/, error_management.c)
 PARSE_FILES = $(addprefix parsing/, parse_input.c parse_input_helpers.c)
 SIMULATION_FILES = $(addprefix simulation/, launch_simulation.c \
 					 get_update_time.c \
-					 data_thread.c philo_thread.c print_state.c)
-UTILS_FILES = #$(addprefix utils/)
-SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)\
- 				$(UTILS_FILES)
+					philo_thread.c print_state.c)
+
+SRCS_FILES	=  philosophers.c $(ERROR_FILES) $(PARSE_FILES) $(SIMULATION_FILES)
 
 SRCS 		= $(addprefix ${SRCS_DIR}, ${SRC_FILES})
 OBJS_DIR	= objs/
@@ -48,7 +47,7 @@ INC			= -Iinclude
 includes	= $(wildcard include/*.h)
 LIBRARY		= custom_library
 
-OBJS_SUB_DIRS = $(addprefix objs/, prog_exit parsing simulation utils)
+OBJS_SUB_DIRS = $(addprefix objs/, prog_exit parsing simulation)
 
 
 # ************************************ #

@@ -6,13 +6,13 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:49:22 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 16:11:23 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 16:59:09 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	parse_input(int argc, char **argv, t_simulation_data *data)
+int	parse_input(int argc, char **argv, t_buttler *data)
 {
 	if (!(argc == 5 || argc == 6) || argv == NULL || *argv == NULL)
 		return (error_message(PROMPT_USER_INPUT));

@@ -58,10 +58,10 @@ void    print_status(int philo_state, t_philo *philo)
     char        *buffer_offset;
     char        buffer[BUFFER_SIZE];
     
-    pthread_mutex_lock(&philo->data->ts_print);
-    if (philo->data->is_end)
+    sem_wait(philo->buttler->print_ts);
+    if (philo->buttler->is_end)
     {
-        pthread_mutex_unlock(&philo->data->ts_print);
+        sem_post(philo->buttler->print_ts);
         return ;
     }
     buffer_offset = buffer;
@@ -80,5 +80,5 @@ void    print_status(int philo_state, t_philo *philo)
     else
         buffer_state(state[philo_state], philo, &buffer_offset);
     write(1, buffer, ft_strlen(buffer));
-    pthread_mutex_unlock(&philo->data->ts_print);
+    sem_post(philo->buttler->print_ts);
 }

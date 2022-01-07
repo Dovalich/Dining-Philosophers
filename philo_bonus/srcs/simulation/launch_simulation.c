@@ -6,72 +6,62 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/05 10:21:29 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 17:54:07 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static int start_odd_group(t_philo *philo_lst, int nb_philo)
+int	kill_all(int *pids, int index, int return_status)
 {
-	int	i;
+	while (index > 0)
+	{
+		kill(pids[index], SIGKILL);
+		--index;
+	}
+	return (return_status);
+}
+
+int	start_simulation(t_buttler *data, t_philo *philo)
+{
+	int				pids[data->nb_of_philo];
+	unsigned int	i;
 
 	i = 0;
-	while (i < nb_philo)
+	get_time();
+	(void)philo;
+	while (i < data->nb_of_philo)
 	{
-		if (pthread_create(&philo_lst[i].thread, NULL, (void *)&philo_thread, &philo_lst[i]) != 0)
+		pids[i] = fork();
+		if (pids[i] == -1)
+			return (kill_all(pids, i, ERROR));
+		else if (pids[i] == 0)
 		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", philo_lst[i].id);
-			return (error_message(THREAD_CREATION));
+			printf("here's my pid %d\n", getpid());
+			if (philo_process(philo, data, i))
+				return (ERROR);
+			// exit(0);
+			return (0);
 		}
-		i += 2;
-	}
-	return (0);
-}
-
-static int start_even_group(t_philo *philo_lst, int nb_philo)
-{
-	int	i;
-
-	i = 1;
-	while (i < nb_philo)
-	{
-		if (pthread_create(&philo_lst[i].thread, NULL, (void *)&philo_thread, &philo_lst[i]) != 0)
-		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", philo_lst[i].id);
-			return (error_message(THREAD_CREATION));
-		}
-		i += 2;
-	}
-	return (0);
-}
-
-int	start_simulation(t_simulation_data *data, t_philo *philo_lst)
-{
-	if (start_even_group(philo_lst, data->nb_of_philo))
-		return (ERROR);
-	usleep(100);
-	if (start_odd_group(philo_lst, data->nb_of_philo))
-		return (ERROR);
-	if (pthread_create(&data->thread, NULL, &data_thread, data) == -1)
-		return (error_message(THREAD_CREATION));
-	return (SUCCESS);
-}
-
-int	terminate_simulation(t_simulation_data *data, t_philo *philo_lst)
-{
-	unsigned long	i;
-
-	pthread_join(data->thread, NULL);
-	pthread_mutex_destroy(&data->ts_print);
-	i = 0;
-	while ((unsigned long)i < data->nb_of_philo)
-	{
-		pthread_join(philo_lst[i].thread, NULL);
-		pthread_mutex_destroy(&philo_lst[i].forks[i]);
 		++i;
 	}
-	free(philo_lst->forks);
-	free(philo_lst);
 	return (SUCCESS);
 }
+
+// int	terminate_simulation(t_buttler *data, t_philo *philo)
+// {
+// 	unsigned long	i;
+
+// 	pthread_join(data->thread, NULL);
+// 	pthread_mutex_destroy(&data->ts_print);
+// 	i = 0;
+// 	while ((unsigned long)i < data->nb_of_philo)
+// 	{
+// 		pthread_join(philo_lst[i].thread, NULL);
+// 		pthread_mutex_destroy(&philo_lst[i].forks[i]);
+// 		++i;
+// 	}
+// 	free(philo_lst->forks);
+// 	free(philo_lst);
+// 	return (SUCCESS);
+// }

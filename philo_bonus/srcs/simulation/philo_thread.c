@@ -6,82 +6,71 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/05 10:47:33 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 18:02:45 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	lock_fork(t_philo *philo, t_simulation_data *data)
+void	lock_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(&philo->forks[philo->id % data->nb_of_philo]);
-		pthread_mutex_lock(&philo->forks[philo->id - 1]);	
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->forks[philo->id - 1]);
-		pthread_mutex_lock(&philo->forks[philo->id % data->nb_of_philo]);
-	}
+	sem_wait(philo->fork);
+	sem_wait(philo->fork);
 }
 
-void	unlock_fork(t_philo *philo, t_simulation_data *data)
+void	unlock_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_unlock(&philo->forks[philo->id % data->nb_of_philo]);
-		pthread_mutex_unlock(&philo->forks[philo->id - 1]);
-
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->forks[philo->id - 1]);
-		pthread_mutex_unlock(&philo->forks[philo->id % data->nb_of_philo]);
-	}	
+	sem_post(philo->fork);
+	sem_post(philo->fork);
 }
 
-void	start_eating(t_philo *philo, t_simulation_data *data)
+void	start_eating(t_philo *philo, t_buttler *data)
 {
-	lock_fork(philo, data);
+	lock_fork(philo);
 	philo->last_ate_at = get_time();
-	if (philo->data->is_end)
+	if (data->is_end)
 	{
-		unlock_fork(philo, data);
+		unlock_fork(philo);
 		return ;
 	}
 	print_status(TOOK_FORKS, philo);
 	print_status(EATING, philo);
 	philo->nb_time_ate += 1;
 	custom_usleep(data->time_to_eat);
-	unlock_fork(philo, data);
+	unlock_fork(philo);
 }
 
-void	start_sleeping(t_philo *philo, t_simulation_data *data)
+void	suicide(int signal)
 {
-	u_timestamp	curr;
+	if (signal == SIGQUIT || signal == SIGKILL)
+	{
+		printf("-++++++++++++++++++++++++++++++CHILD ++++++++\n\n\n\n");
+		kill(getpid(), SIGKILL);
+	}
+}
+
+void	start_sleeping(t_philo *philo, t_buttler *data)
+{	
 	print_status(SLEEPING, philo);
-	curr = get_time();
 	custom_usleep(data->time_to_sleep);
 }
 
-void	*philo_thread(t_philo *philo)
+int	philo_process(t_philo *philo, t_buttler *buttler, int id)
 {
-	if (philo->data->nb_of_philo == 1)
+	philo->fork = sem_open(SEM_NAME_FORKS, 0);
+	buttler->print_ts = sem_open(SEM_NAME_PRINT_TS, 0);
+	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED)
+		return (error_message(SEMAPHORE_CREATION));
+	philo->id = id + 1;
+	// if (pthread_create(&buttler->thread, NULL, &buttler_thread, buttler) == -1)
+		// return (error_message(THREAD_CREATION));
+	while (!buttler->is_end)
 	{
-		print_status(TOOK_LEFT_FORK, philo);
-		usleep(philo->data->time_to_die * 1000);
-	}
-	while (!philo->data->is_end)
-	{
-		start_eating(philo, philo->data);
-		if (philo->data->is_end)
-			break ;
-		start_sleeping(philo, philo->data);
-		if (philo->data->is_end)
-			break ;
+		start_eating(philo, buttler);
+		start_sleeping(philo, buttler);
 		print_status(THINKING, philo);
 		usleep(100);
+		signal(SIGQUIT, &suicide);
 	}
-	return (NULL);
+	return (SUCCESS);
 }

@@ -6,13 +6,13 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 01:00:36 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/04 16:08:59 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/07 17:02:25 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-bool	is_dead(t_philo philo, t_simulation_data *data)
+bool	is_dead(t_philo philo, t_buttler *data)
 {
 	if (data->is_end == true)
 		return (true);
@@ -21,7 +21,7 @@ bool	is_dead(t_philo philo, t_simulation_data *data)
 	return (false);
 }
 
-bool	all_philos_ate(t_philo *philo_lst, t_simulation_data *data)
+bool	all_philos_ate(t_philo *philo_lst, t_buttler *data)
 {
 	unsigned long	i;
 
@@ -35,7 +35,7 @@ bool	all_philos_ate(t_philo *philo_lst, t_simulation_data *data)
 	return (true);
 }
 
-static bool	all_philos_alive(t_philo *philo_lst, t_simulation_data *data)
+static bool	all_philos_alive(t_philo *philo_lst, t_buttler *data)
 {
 	unsigned long	i;
 
@@ -55,7 +55,7 @@ static bool	all_philos_alive(t_philo *philo_lst, t_simulation_data *data)
 
 void	*data_thread(void *data)
 {
-	t_simulation_data	*d;
+	t_buttler	*d;
 	t_philo				*philo;
 	unsigned long		i;
 
