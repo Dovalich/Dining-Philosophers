@@ -3,16 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
+#    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/14 13:08:00 by nammari           #+#    #+#              #
-#    Updated: 2022/01/08 12:12:24 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/08 13:45:41 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_FILES = ft_atoul.c ft_putstr_fd.c ft_ultoa.c num_checkers.c \
-str_len.c ft_strcmp.c
-
+str_len.c ft_strcmp.c digit_len.c
 CC		= gcc -c
 
 AR		= ar

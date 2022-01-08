@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/08 11:00:44 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 15:59:40 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@
 // 	}
 // }
 
+static void	unlink_all(void)
+{
+	sem_unlink(SEM_NAME_PRINT_TS);
+	sem_unlink(SEM_NAME_FORKS);
+	sem_unlink(SEM_NAME_DEATH);
+}
+
 static int	init_philosopher(t_buttler *data, t_philo *philo)
 {
 	data->philo = philo;
@@ -48,18 +55,6 @@ static int	init_philosopher(t_buttler *data, t_philo *philo)
 	return (SUCCESS);
 }
 
-void	kill_children_process(int pids[], unsigned int nb)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < nb)
-	{
-		kill(pids[i], SIGKILL);
-		++i;
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_buttler			data;
@@ -67,11 +62,12 @@ int	main(int argc, char **argv)
 
 	if (parse_input(argc, argv, &data))
 		return (ERROR);
-	sem_unlink(SEM_NAME_PRINT_TS);
-	sem_unlink(SEM_NAME_FORKS);
+	unlink_all();
 	philo.fork = sem_open(SEM_NAME_FORKS, O_CREAT, 0666, data.nb_of_philo);
 	data.print_ts = sem_open(SEM_NAME_PRINT_TS, O_CREAT, 0666, 1);
-	if (philo.fork == SEM_FAILED || data.print_ts == SEM_FAILED)
+	data.death = sem_open(SEM_NAME_DEATH, O_CREAT, 0666, 0);
+	if (philo.fork == SEM_FAILED || data.print_ts == SEM_FAILED
+		|| data.death == SEM_FAILED)
 		return (error_message(SEMAPHORE_CREATION));
 	close_sem(data.print_ts, philo.fork, false);
 	if (init_philosopher(&data, &philo))
@@ -79,6 +75,8 @@ int	main(int argc, char **argv)
 	if (start_simulation(&data, &philo))
 		return (ERROR);
 	close_sem(data.print_ts, philo.fork, true);
+	sem_close(data.death);
+	sem_unlink(SEM_NAME_DEATH);
 	exit(SUCCESS);
 	return (SUCCESS);
 }

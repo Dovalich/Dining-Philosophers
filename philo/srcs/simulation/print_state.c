@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_state.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 11:28:35 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/08 11:33:28 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:06:56 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,30 @@ static void	buffer_state(const char *str, t_philo *philo, char **buffer)
 	copy_str_to_buffer(str, buffer);
 }
 
+static void	fill_buffer(const char *state[], char **buffer, int philo_state,
+						t_philo *philo)
+{
+	if (philo_state == TOOK_FORKS)
+	{
+		buffer_state(state[TOOK_LEFT_FORK], philo, buffer);
+		buffer_state(state[TOOK_RIGHT_FORK], philo, buffer);
+	}
+	else
+		buffer_state(state[philo_state], philo, buffer);
+}
+
 void	print_status(int philo_state, t_philo *philo)
 {
 	const char	*state[6];
 	char		*buffer_offset;
 	char		buffer[BUFFER_SIZE];
 
-	if (philo->data->is_end)
-		return ;
 	pthread_mutex_lock(&philo->data->ts_print);
+	if (philo->data->is_end)
+	{
+		pthread_mutex_unlock(&philo->data->ts_print);
+		return ;
+	}
 	buffer_offset = buffer;
 	memset(buffer, 0, BUFFER_SIZE);
 	state[SLEEPING] = " is sleeping\n";
@@ -68,13 +83,7 @@ void	print_status(int philo_state, t_philo *philo)
 	state[DIED] = " is dead\n";
 	state[TOOK_LEFT_FORK] = " took left fork\n";
 	state[TOOK_RIGHT_FORK] = " took right fork\n";
-	if (philo_state == TOOK_FORKS)
-	{
-		buffer_state(state[TOOK_LEFT_FORK], philo, &buffer_offset);
-		buffer_state(state[TOOK_RIGHT_FORK], philo, &buffer_offset);
-	}
-	else
-		buffer_state(state[philo_state], philo, &buffer_offset);
+	fill_buffer(state, &buffer_offset, philo_state, philo);
 	write(1, buffer, ft_strlen(buffer));
 	pthread_mutex_unlock(&philo->data->ts_print);
 }

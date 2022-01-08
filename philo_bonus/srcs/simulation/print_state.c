@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_state.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 01:39:26 by noufel            #+#    #+#             */
-/*   Updated: 2022/01/08 11:07:11 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 15:15:53 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	print_status(int philo_state, t_philo *philo)
 	char		buffer[BUFFER_SIZE];
 
 	if (sem_wait(philo->buttler->print_ts) == -1)
-		exit(0);
+		exit (0);
 	buffer_offset = buffer;
 	memset(buffer, 0, BUFFER_SIZE);
 	state[SLEEPING] = " is sleeping\n";

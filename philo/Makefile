@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
+#    By: nammari <nammari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/04 16:15:07 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/08 13:47:56 by nammari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ YEL			= \033[0;33m
 GRN			= \033[0;32m
 RM			= rm -rf
 CC			= clang
-CFLAGS		= -Wall -Werror -Wextra -pthread -g3 -fsanitize=address #-v
+CFLAGS		= -Wall -Werror -Wextra -pthread #-g3 -fsanitize=address #-v
 NAME		= philosophers
 SRCS_DIR	= srcs/
 
@@ -73,6 +73,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(include)
 	$(CC) $(INC) -c $(CFLAGS) -o $@ $<
 
 clean:
+	make clean -sC $(LIBRARY)
 	$(RM) $(OBJ)
 	$(RM) $(OBJ_BONUS)
 	@printf "$(WHT)[$(YEL)$(NAME) OBJS REMOVED$(WHT)]\n"

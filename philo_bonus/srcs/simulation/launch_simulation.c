@@ -3,37 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   launch_simulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/08 01:38:01 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 15:50:00 by nammari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	kill_all(int *pids, int index, int return_status)
-{
-	while (index > 0)
-	{
-		kill(pids[index], SIGKILL);
-		--index;
-	}
-	return (return_status);
-}
-
-int	wait_for_children(int *pids, unsigned int nb)
+static int	kill_children_proc(int **pids, unsigned int nb, int status)
 {
 	unsigned int	i;
 
 	i = 0;
 	while (i < nb)
 	{
-		waitpid(-1, NULL, 0);
-		kill_children_process(pids, nb);
+		kill((*pids)[i], SIGKILL);
 		++i;
 	}
-	return (SUCCESS);
+	free(*pids);
+	return (status);
 }
 
 int	start_simulation(t_buttler *data, t_philo *philo)
@@ -50,7 +40,7 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			return (kill_all(pids, i, ERROR));
+			return (kill_children_proc(&pids, i, ERROR));
 		else if (pids[i] == 0)
 		{
 			free(pids);
@@ -60,9 +50,8 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 		}
 		++i;
 	}
-	wait_for_children(pids, data->nb_of_philo);
-	free(pids);
-	return (SUCCESS);
+	sem_wait(data->death);
+	return (kill_children_proc(&pids, data->nb_of_philo, SUCCESS));
 }
 
 int	close_sem(sem_t *forks, sem_t *print_ts, bool unlink)
