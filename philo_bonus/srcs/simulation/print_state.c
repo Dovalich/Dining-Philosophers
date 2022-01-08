@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_state.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/08 01:39:26 by noufel            #+#    #+#             */
+/*   Updated: 2022/01/08 01:49:32 by noufel           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-static size_t digit_len(u_timestamp nb)
+static size_t   digit_len(u_timestamp nb)
 {
     size_t i;
 
@@ -13,10 +25,10 @@ static size_t digit_len(u_timestamp nb)
     return (i);
 }
 
-static void    copy_int_as_str_to_buffer(u_timestamp nb, char **buffer)
+static void copy_int_as_str_to_buffer(u_timestamp nb, char **buffer)
 {
-    size_t  len;
-    size_t  offset;
+    size_t len;
+    size_t offset;
 
     len = digit_len(nb);
     offset = len;
@@ -31,10 +43,10 @@ static void    copy_int_as_str_to_buffer(u_timestamp nb, char **buffer)
 
 static void copy_str_to_buffer(const char *str, char **buffer)
 {
-    size_t  i;
+    size_t i;
 
     if (str == NULL)
-        return ;
+        return;
     i = 0;
     while (str[i])
     {
@@ -52,12 +64,12 @@ static void buffer_state(const char *str, t_philo *philo, char **buffer)
     copy_str_to_buffer(str, buffer);
 }
 
-void    print_status(int philo_state, t_philo *philo)
+void print_status(int philo_state, t_philo *philo)
 {
     const char *state[6];
-    char        *buffer_offset;
-    char        buffer[BUFFER_SIZE];
-    
+    char *buffer_offset;
+    char buffer[BUFFER_SIZE];
+
     if (sem_wait(philo->buttler->print_ts) == -1)
         exit(0);
     buffer_offset = buffer;

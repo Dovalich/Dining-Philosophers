@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 23:42:27 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 01:38:01 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,29 @@ int	kill_all(int *pids, int index, int return_status)
 	return (return_status);
 }
 
-int	start_simulation(t_buttler *data, t_philo *philo)
+int	wait_for_children(int *pids, unsigned int nb)
 {
-	int				pids[data->nb_of_philo];
 	unsigned int	i;
 
 	i = 0;
+	while (i < nb)
+	{
+		waitpid(-1, NULL, 0);
+		kill_children_process(pids, nb);
+		++i;
+	}
+	return (SUCCESS);
+}
+
+int	start_simulation(t_buttler *data, t_philo *philo)
+{
+	int				*pids;
+	unsigned int	i;
+
+	i = 0;
+	pids = malloc(sizeof(int) * data->nb_of_philo);
+	if (!pids)
+		return (ERROR);
 	get_time();
 	while (i < data->nb_of_philo)
 	{
@@ -36,36 +53,26 @@ int	start_simulation(t_buttler *data, t_philo *philo)
 			return (kill_all(pids, i, ERROR));
 		else if (pids[i] == 0)
 		{
-			signal(SIGINT, &suicide);
+			free(pids);
 			if (philo_process(philo, data, i + 1))
 				exit(ERROR);
 			exit(SUCCESS);
 		}
 		++i;
 	}
-	while (i > 0)
-	{
-		waitpid(-1, NULL, 0);
-		kill_children_process(pids, data->nb_of_philo);
-		--i;
-	}
+	wait_for_children(pids, data->nb_of_philo);
+	free(pids);
 	return (SUCCESS);
 }
 
-// int	terminate_simulation(t_buttler *data, t_philo *philo)
-// {
-// 	unsigned long	i;
-
-// 	pthread_join(data->thread, NULL);
-// 	pthread_mutex_destroy(&data->ts_print);
-// 	i = 0;
-// 	while ((unsigned long)i < data->nb_of_philo)
-// 	{
-// 		pthread_join(philo_lst[i].thread, NULL);
-// 		pthread_mutex_destroy(&philo_lst[i].forks[i]);
-// 		++i;
-// 	}
-// 	free(philo_lst->forks);
-// 	free(philo_lst);
-// 	return (SUCCESS);
-// }
+int	close_sem(sem_t *forks, sem_t *print_ts, bool unlink)
+{
+	sem_close(print_ts);
+	sem_close(forks);
+	if (unlink)
+	{
+		sem_unlink(SEM_NAME_PRINT_TS);
+		sem_unlink(SEM_NAME_FORKS);
+	}
+	return (SUCCESS);
+}

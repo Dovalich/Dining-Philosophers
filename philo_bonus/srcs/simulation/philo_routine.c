@@ -1,65 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_thread.c                                     :+:      :+:    :+:   */
+/*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 23:31:20 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 01:38:42 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	lock_fork(t_philo *philo)
+static void	start_eating(t_philo *philo, t_buttler *buttler)
 {
+	if (buttler->is_end)
+		return ;
 	if (sem_wait(philo->fork) == -1 || sem_wait(philo->fork) == -1)
 		return ;
-}
-
-void	unlock_fork(t_philo *philo)
-{
-	if (sem_post(philo->fork) == -1 || sem_post(philo->fork) == -1)
-		return ;
-}
-
-void	start_eating(t_philo *philo, t_buttler *data)
-{
-	lock_fork(philo);
 	philo->last_ate_at = get_time();
 	print_status(TOOK_FORKS, philo);
 	print_status(EATING, philo);
 	philo->nb_time_ate += 1;
-	custom_usleep(data->time_to_eat);
-	unlock_fork(philo);
+	custom_usleep(buttler->time_to_eat);
+	if (sem_post(philo->fork) == -1 || sem_post(philo->fork) == -1)
+		return ;
 }
 
-void	suicide(int signal)
+static void	start_sleeping(t_philo *philo, t_buttler *buttler)
 {
-	(void)signal;
-	printf("Child with id %d and parent %d is getting killed \n", getpid(), getppid());
-	kill(getpid(), SIGKILL);
-}
-
-void	start_sleeping(t_philo *philo, t_buttler *data)
-{	
+	if (buttler->is_end)
+		return ;
 	print_status(SLEEPING, philo);
-	custom_usleep(data->time_to_sleep);
+	custom_usleep(buttler->time_to_sleep);
 }
 
-void	*buttler_thread(void *dat)
+void	*buttler_thread(void *data)
 {
-	t_buttler	*data;
+	t_buttler	*buttler;
 
-	data = (t_buttler *)dat;
-	while (!data->is_end)
+	buttler = (t_buttler *)data;
+	while (!buttler->is_end)
 	{
-		if (get_time() - data->philo->last_ate_at >= data->time_to_die)
+		if (get_time() - buttler->philo->last_ate_at >= buttler->time_to_die)
 		{
-			print_status(DIED, data->philo);
-			data->is_end = true;
-			return (NULL);
+			print_status(DIED, buttler->philo);
+			buttler->is_end = true;
+			close_sem(buttler->print_ts, buttler->philo->fork, true);
+			exit(0);
 		}
 		usleep(100);
 	}
@@ -68,13 +56,14 @@ void	*buttler_thread(void *dat)
 
 int	philo_process(t_philo *philo, t_buttler *buttler, int id)
 {
+	philo->id = id;
 	philo->fork = sem_open(SEM_NAME_FORKS, 0);
 	buttler->print_ts = sem_open(SEM_NAME_PRINT_TS, 0);
 	if (philo->fork == SEM_FAILED || buttler->print_ts == SEM_FAILED)
 		return (error_message(SEMAPHORE_CREATION));
-	philo->id = id;
-	if (pthread_create(&buttler->thread, NULL, &buttler_thread, (void *)buttler) == -1)
+	if (pthread_create(&buttler->thread, NULL, &buttler_thread, buttler))
 		return (error_message(THREAD_CREATION));
+	pthread_detach(buttler->thread);
 	while (!buttler->is_end)
 	{
 		if (philo->nb_time_ate == buttler->nb_time_to_eat)
@@ -84,20 +73,11 @@ int	philo_process(t_philo *philo, t_buttler *buttler, int id)
 			buttler->is_end = true;
 			break ;
 		}
-		if (!buttler->is_end)
-			break ;
 		start_eating(philo, buttler);
-		if (!buttler->is_end)
-			break ;
 		start_sleeping(philo, buttler);
-		if (!buttler->is_end)
-			break ;
 		print_status(THINKING, philo);
-		if (!buttler->is_end)
-			break ;
 		usleep(100);
 	}
-	pthread_join(buttler->thread, NULL);
-	exit(0);
+	close_sem(buttler->print_ts, philo->fork, true);
 	return (SUCCESS);
 }

@@ -106,7 +106,7 @@ int				get_nb_times_to_eat(char *argv, t_buttler *data);
 void			*buttler_thread(void *data);
 u_timestamp		get_time(void);
 int				start_simulation(t_buttler *data, t_philo *head);
-int				terminate_simulation(t_buttler *data, t_philo *philo);
+int				close_sem(sem_t *forks, sem_t *print_ts, bool unlink);
 void			print_status(int philo_state, t_philo *philo);
 void			custom_usleep(u_timestamp sleep_for);
 int				philo_process(t_philo *philo, t_buttler *buttler, int id);

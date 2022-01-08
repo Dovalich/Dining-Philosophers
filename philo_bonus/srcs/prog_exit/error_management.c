@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:38:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/07 22:03:21 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 01:17:39 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	error_message(int error_type)
 {
-	const char	*table[6];
+	const char	*table[7];
 	
 	table[THREAD_CREATION] = "Error! Pthread_create failed\n";
+	table[SEMAPHORE_CREATION] = "Error! Sem_open failed\n";
 	table[EMPTY_LIST] = "Error! Empty list\n";
 	table[EMPTY_ELEM] = "Error! Pushing NULL Elem to list\n";
 	table[INVALID_NB_ARGS] = "Error! Invalid number of arguments\n";
