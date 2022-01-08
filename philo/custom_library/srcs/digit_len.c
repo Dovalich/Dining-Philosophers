@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_len.c                                          :+:      :+:    :+:   */
+/*   digit_len.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 15:32:13 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/08 11:02:31 by noufel           ###   ########.fr       */
+/*   Created: 2022/01/08 11:26:59 by noufel            #+#    #+#             */
+/*   Updated: 2022/01/08 11:27:44 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils_lib.h"
 
-unsigned long	ft_strlen(char *str)
+size_t	digit_len(t_u_timestamp nb)
 {
-	unsigned long	i;
+	size_t	i;
 
-	i = 0;
-	if (str == NULL || *str == '\0')
-		return (0);
-	while (str[i])
+	i = 1;
+	while (nb / 10)
+	{
+		nb /= 10;
 		++i;
+	}
 	return (i);
 }

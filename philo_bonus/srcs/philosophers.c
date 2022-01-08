@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/08 01:27:08 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:00:44 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 // void	suicide(int signal)
 // {
 // 	(void)signal;
-// 	printf("Child with id %d and parent %d is getting killed \n", getpid(), getppid());
+// 	printf("Child with id %d and parent %d is 
+//  getting killed \n", getpid(), getppid());
 // 	kill(getpid(), SIGKILL);
 // }
 
@@ -63,7 +64,7 @@ int	main(int argc, char **argv)
 {
 	t_buttler			data;
 	t_philo				philo;
-	
+
 	if (parse_input(argc, argv, &data))
 		return (ERROR);
 	sem_unlink(SEM_NAME_PRINT_TS);

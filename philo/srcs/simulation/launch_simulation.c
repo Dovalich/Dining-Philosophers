@@ -6,22 +6,22 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/05 10:21:29 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:35:30 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static int start_odd_group(t_philo *philo_lst, int nb_philo)
+static int	start_odd_group(t_philo *philo_lst, int nb_philo)
 {
 	int	i;
 
 	i = 0;
 	while (i < nb_philo)
 	{
-		if (pthread_create(&philo_lst[i].thread, NULL, (void *)&philo_thread, &philo_lst[i]) != 0)
+		if (pthread_create(&philo_lst[i].thread, NULL,
+				(void *)&philo_thread, &philo_lst[i]) != 0)
 		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", philo_lst[i].id);
 			return (error_message(THREAD_CREATION));
 		}
 		i += 2;
@@ -29,16 +29,16 @@ static int start_odd_group(t_philo *philo_lst, int nb_philo)
 	return (0);
 }
 
-static int start_even_group(t_philo *philo_lst, int nb_philo)
+static int	start_even_group(t_philo *philo_lst, int nb_philo)
 {
 	int	i;
 
 	i = 1;
 	while (i < nb_philo)
 	{
-		if (pthread_create(&philo_lst[i].thread, NULL, (void *)&philo_thread, &philo_lst[i]) != 0)
+		if (pthread_create(&philo_lst[i].thread, NULL,
+				(void *)&philo_thread, &philo_lst[i]) != 0)
 		{
-			printf("Pthread_create faillure at Philosopher nb #%lu\n", philo_lst[i].id);
 			return (error_message(THREAD_CREATION));
 		}
 		i += 2;

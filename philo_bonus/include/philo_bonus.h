@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_BONUS_H
+#ifndef PHILO_BONUS_H
 
-# define PHILOSOPHERS_BONUS_H
+# define PHILO_BONUS_H
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -36,9 +36,9 @@
 # define SEM_NAME_FORKS "forks"
 # define SEM_NAME_PRINT_TS "print_ts"
 
-typedef unsigned long long u_timestamp;
+typedef unsigned long long	t_u_timestamp;
 
-enum error_flags {
+enum e_error_flags {
 	THREAD_CREATION = 0,
 	EMPTY_LIST,
 	EMPTY_ELEM,
@@ -47,7 +47,7 @@ enum error_flags {
 	SEMAPHORE_CREATION,
 };
 
-typedef enum philo_states {
+typedef enum e_philo_states {
 	SLEEPING = 0,
 	THINKING,
 	EATING,
@@ -55,27 +55,28 @@ typedef enum philo_states {
 	TOOK_LEFT_FORK,
 	TOOK_RIGHT_FORK,
 	TOOK_FORKS
-} 			philo_states;
+}			t_philo_states;
 
 // Structures ------------------------------------------------------------- //
-typedef struct s_philo t_philo;
+
+typedef struct s_philo		t_philo;
 
 typedef struct s_buttler {
-	u_timestamp		time_to_die;
-	u_timestamp		time_to_eat;
-	u_timestamp		time_to_sleep;
-	sem_t			*print_ts;
-	pthread_t		thread;
-	unsigned long	nb_of_philo;
-	unsigned long	nb_time_to_eat;
-	bool			is_end;
-	t_philo			*philo;
+	t_u_timestamp		time_to_die;
+	t_u_timestamp		time_to_eat;
+	t_u_timestamp		time_to_sleep;
+	sem_t				*print_ts;
+	pthread_t			thread;
+	unsigned long		nb_of_philo;
+	unsigned long		nb_time_to_eat;
+	bool				is_end;
+	t_philo				*philo;
 }				t_buttler;
 
 typedef struct s_philo {
 	unsigned long		id;
 	unsigned long		nb_time_ate;
-	u_timestamp			last_ate_at;
+	t_u_timestamp		last_ate_at;
 	sem_t				*fork;
 	t_buttler			*buttler;
 }				t_philo;
@@ -91,7 +92,6 @@ void			*malloc_error(char *error_msg);
 void			free_list(t_philo *head);
 void			*mutex_creation_error(void);
 
-	
 	// Parsing
 
 int				parse_input(int argc, char **argv, t_buttler *data);
@@ -104,11 +104,11 @@ int				get_nb_times_to_eat(char *argv, t_buttler *data);
 	// Simulation
 
 void			*buttler_thread(void *data);
-u_timestamp		get_time(void);
+t_u_timestamp	get_time(void);
 int				start_simulation(t_buttler *data, t_philo *head);
 int				close_sem(sem_t *forks, sem_t *print_ts, bool unlink);
 void			print_status(int philo_state, t_philo *philo);
-void			custom_usleep(u_timestamp sleep_for);
+void			custom_usleep(t_u_timestamp sleep_for);
 int				philo_process(t_philo *philo, t_buttler *buttler, int id);
 void			suicide(int signal);
 void			kill_children_process(int pids[], unsigned int nb);

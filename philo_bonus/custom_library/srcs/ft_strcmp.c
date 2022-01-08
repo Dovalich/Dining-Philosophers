@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 13:21:52 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/14 13:39:21 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/08 11:01:37 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	unsigned long		i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	unsigned char		*str1;
+	unsigned char		*str2;
 
 	i = 0;
 	if (!s1 && !s2)

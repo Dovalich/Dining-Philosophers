@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:14:58 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/04 16:10:00 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:37:51 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_philo	*init_philosophers(t_simulation_data *data)
 	pthread_mutex_t	*forks;
 	t_philo			*philo_list;
 	unsigned int	i;
-	
+
 	forks = malloc(sizeof(*forks) * data->nb_of_philo);
 	philo_list = malloc(sizeof(*philo_list) * data->nb_of_philo);
 	if (forks == NULL || philo_list == NULL)
@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 {
 	t_simulation_data	data;
 	t_philo				*philo_list;
-	
+
 	if (parse_input(argc, argv, &data) != SUCCESS)
 		return (ERROR);
 	philo_list = init_philosophers(&data);

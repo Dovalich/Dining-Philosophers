@@ -6,7 +6,7 @@
 /*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 15:13:19 by nammari           #+#    #+#             */
-/*   Updated: 2022/01/05 10:47:33 by noufel           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:36:12 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	lock_fork(t_philo *philo, t_simulation_data *data)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->forks[philo->id % data->nb_of_philo]);
-		pthread_mutex_lock(&philo->forks[philo->id - 1]);	
+		pthread_mutex_lock(&philo->forks[philo->id - 1]);
 	}
 	else
 	{
@@ -32,7 +32,6 @@ void	unlock_fork(t_philo *philo, t_simulation_data *data)
 	{
 		pthread_mutex_unlock(&philo->forks[philo->id % data->nb_of_philo]);
 		pthread_mutex_unlock(&philo->forks[philo->id - 1]);
-
 	}
 	else
 	{
@@ -59,7 +58,8 @@ void	start_eating(t_philo *philo, t_simulation_data *data)
 
 void	start_sleeping(t_philo *philo, t_simulation_data *data)
 {
-	u_timestamp	curr;
+	t_u_timestamp	curr;
+
 	print_status(SLEEPING, philo);
 	curr = get_time();
 	custom_usleep(data->time_to_sleep);

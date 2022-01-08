@@ -6,7 +6,7 @@
 #    By: noufel <noufel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 21:34:46 by sdummett          #+#    #+#              #
-#    Updated: 2022/01/08 01:12:17 by noufel           ###   ########.fr        #
+#    Updated: 2022/01/08 11:46:25 by noufel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,10 +38,6 @@ SRCS 		= $(addprefix ${SRCS_DIR}, ${SRC_FILES})
 OBJS_DIR	= objs/
 OBJS_FILES	= $(SRCS_FILES:.c=.o)
 OBJ			= $(addprefix ${OBJS_DIR}, ${OBJS_FILES})
-
-NAME_BONUS	= philosophers_bonus
-SRC_BONUS	= philosophers_bonus.c
-OBJ_BONUS	= $(SRC_BONUS:.c=.o)
 INC			= -Iinclude
 includes	= $(wildcard include/*.h)
 LIBRARY		= custom_library
@@ -71,8 +67,8 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(include)
 	$(CC) $(INC) -c $(CFLAGS) -o $@ $<
 
 clean:
+	make clean -sC $(LIBRARY)
 	$(RM) $(OBJ)
-	$(RM) $(OBJ_BONUS)
 	@printf "$(WHT)[$(YEL)$(NAME) OBJS REMOVED$(WHT)]\n"
 
 fclean: clean

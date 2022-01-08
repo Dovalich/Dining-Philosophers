@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   num_checkers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nammari <nammari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: noufel <noufel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/12 04:32:42 by nammari           #+#    #+#             */
-/*   Updated: 2021/12/14 13:39:21 by nammari          ###   ########.fr       */
+/*   Updated: 2022/01/08 11:04:50 by noufel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	is_bigger_than_ulong_max(char *str)
 		return (false);
 	while (*str == '0')
 	{
-		++str;	
+		++str;
 	}
 	u_long_max = ft_ultoa(ULONG_MAX);
 	if (ft_strlen(str) > ft_strlen(u_long_max))
@@ -41,8 +41,8 @@ bool	is_bigger_than_ulong_max(char *str)
 		free(u_long_max);
 		return (true);
 	}
-	else if (ft_strlen(str) == ft_strlen(u_long_max) 
-			&& ft_strcmp(str, u_long_max) > 0)
+	else if (ft_strlen(str) == ft_strlen(u_long_max)
+		&& ft_strcmp(str, u_long_max) > 0)
 	{
 		free(u_long_max);
 		return (true);
