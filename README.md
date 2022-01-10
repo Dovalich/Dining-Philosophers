@@ -22,11 +22,11 @@ https://en.wikipedia.org/wiki/Dining_philosophers_problem
 
 -> Git clone
 
--> run Make
+-> make
 
 -> Read instructions below
 
--> run ./philosophers
+-> run ./philosophers [args]
 
 ### Instructions
 
