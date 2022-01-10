@@ -1,4 +1,4 @@
-# Philosophers
+# The Dining Philosophers
 
 The Dining Philosophers is an example problem often used in concurrent algorithm design to illustrate synchronization issues and techniques for resolving them.
 
