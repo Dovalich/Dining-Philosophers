@@ -14,11 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make main
-      working-directory: ./philo
-      run:  |
-        make
-        make fclean
+    - run: cd ./philo
+    - run: make
+    - run: make fclean
+  
     - name: make bonus
-      working-directory: ./philo_bonus
+    - run: cd ./philo_bonus
     - run: make
     - run: make fclean
