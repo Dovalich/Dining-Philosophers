@@ -1,4 +1,4 @@
-name: C CI
+name: Make Philo on push
 
 on:
   push:
@@ -8,17 +8,9 @@ on:
 
 jobs:
   build:
-
+    name: Test Make phi
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: make main
-    - run: cd ./philo
-    - run: make
-    - run: make fclean
-  
-    - name: make bonus
-    - run: cd ./philo_bonus
-    - run: make
-    - run: make fclean
+    - run: cd ./philo && make
